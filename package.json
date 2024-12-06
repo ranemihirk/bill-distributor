@@ -1,48 +1,26 @@
 {
-  "dependencies": {
-    "@emotion/react": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
-    "@fortawesome/fontawesome-svg-core": "^6.4.0",
-    "@fortawesome/free-solid-svg-icons": "^6.4.0",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@mui/material": "^5.13.1",
-    "@types/node": "^16.18.19",
-    "@types/react": "^18.0.29",
-    "@types/react-dom": "^18.0.11",
-    "axios": "^1.3.5",
-    "daisyui": "^2.51.5",
-    "framer-motion": "^10.12.4",
-    "moment": "^2.29.4",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-moment": "^1.1.3",
-    "react-router-dom": "^6.9.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5"
-  },
+  "name": "demo",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "set PORT=3020 && react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "15.0.4"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.3",
-    "@tailwindcss/typography": "^0.5.9",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.22",
-    "tailwindcss": "^3.3.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.4"
   }
 }

@@ -1,8 +1,5 @@
+"use client"
 import React, { lazy, useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import logo from "./assets/imgs/rmklogo.png";
-import Button from "@mui/material/Button";
 import BillToUserInfo from "./BillToUserInfo";
 
 type UsersProp = {
@@ -103,7 +100,7 @@ const defaultTaxes: TaxProp[] = [
 const extraFee = 30;
 const billPaid = 662.5;
 
-export default function BillInfo() {
+export default function BillsPage() {
   const [users, setUsers] = useState<UsersProp[] | null>(null); // Change 'defaultUsers' to null when actual users can be added.
   const [items, setItems] = useState<ItemsProp[] | null>(null); // Change 'defaultUsers' to null when actual users can be added.
   const [taxes, setTaxes] = useState<TaxProp[] | null>(null); // Change 'defaultUsers' to null when actual users can be added.

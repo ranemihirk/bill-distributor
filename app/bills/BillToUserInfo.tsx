@@ -1,9 +1,4 @@
 import React, { lazy, useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import logo from "./assets/imgs/rmklogo.png";
-import Button from "@mui/material/Button";
-import ItemsToUsers from "./ItemsToUsers";
 
 type UsersProp = {
   id: number;
@@ -81,25 +76,14 @@ export default function BillToUserInfo({
     currentItems.map((item) => {
       billTotal = billTotal + item.itemPrice * item.itemQuantity;
     });
-
-    console.log("billTotal: ", billTotal);
-    console.log("(billTotal * 5): ", (billTotal * 5) / 100);
-    console.log(
-      "billTotal + (billTotal * 5): ",
-      billTotal + (billTotal * 5) / 100
-    );
-
     return billTotal + (billTotal * 5) / 100;
   };
 
   useEffect(() => {
     if (itemsToUser && itemsToUser.length > 0) {
-      // console.log("itemsToUser: ", itemsToUser);
       itemsToUser.map((itemsUser) => {
-        console.log("itemsUser: ", itemsUser);
         const currentUser: UsersProp =
           getCurrentUser(itemsUser.userId) ?? defaultUser;
-        // if (currentUser != undefined) {
         const currentUserToItems: CurrentItemsToUsers[] = [];
         if (itemsUser.items && itemsUser.items.length > 0) {
           itemsUser.items.map((current) => {
@@ -111,10 +95,6 @@ export default function BillToUserInfo({
                 itemQuantity: current.quantity,
               };
               currentUserToItems.push(newResult);
-              // setCurrentItemsToUser((prevCurrentItems) => {
-              //   const newCurrentItems = [...prevCurrentItems, newResult];
-              //   return newCurrentItems;
-              // });
             }
           });
           setCurrentItemsToUser((prevCurrentItems) => {
@@ -177,6 +157,14 @@ export default function BillToUserInfo({
                   ))}
                   <tr>
                     <th className="border" colSpan={2}>
+                      Convinience Fee
+                    </th>
+                    <th className="border" colSpan={2}>
+                      {extraFee / currentItemsToUser.length}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th className="border" colSpan={2}>
                       Bill Amount
                     </th>
                     <th className="border" colSpan={2}>
@@ -188,10 +176,16 @@ export default function BillToUserInfo({
                       Discounted Bill Amount
                     </th>
                     <th className="border" colSpan={2}>
-                      {Math.round((getCurrentUserTotal(current.items) *
-                        Math.round(((billPaid - extraFee) / billTotal) * 100)) /
-                        100) + (extraFee / currentItemsToUser.length)}{" "}
-                      - {Math.round(((billPaid - extraFee) / billTotal) * 100)} %
+                      {Math.round(
+                        (getCurrentUserTotal(current.items) *
+                          Math.round(
+                            ((billPaid - extraFee) / billTotal) * 100
+                          )) /
+                          100
+                      ) +
+                        extraFee / currentItemsToUser.length}{" "}
+                      - {Math.round(((billPaid - extraFee) / billTotal) * 100)}{" "}
+                      %
                     </th>
                   </tr>
                 </table>
