@@ -6,6 +6,9 @@ const Default = lazy(
 const Layout = lazy(
   () => import(/* webpackChunkName: "VidtuRouter" */ "./component/Layout")
 );
+const BillInfo = lazy(
+  () => import(/* webpackChunkName: "VidtuRouter" */ "./component/BillInfo/BillInfo")
+);
 
 export default function BillDistributionRouter() {
   const user = null;
@@ -21,7 +24,7 @@ export default function BillDistributionRouter() {
           path: "",
           element: (
             <Suspense fallback={<>...</>}>
-              <Default />
+              <BillInfo />
             </Suspense>
           ),
         },

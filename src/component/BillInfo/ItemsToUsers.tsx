@@ -49,13 +49,13 @@ export default function ItemsToUsers({
   currentUser,
   currentItemsToUser,
 }: ItemsToUserProp) {
-  console.log(
-    "ItemsToUsers current: ",
-    users,
-    items,
-    currentUser,
-    currentItemsToUser
-  );
+  // console.log(
+  //   "ItemsToUsers current: ",
+  //   users,
+  //   items,
+  //   currentUser,
+  //   currentItemsToUser
+  // );
   const [currentItems, setCurrentItems] = useState<CurrentItemsToUsers[]>([]);
 
   useEffect(() => {
@@ -90,13 +90,13 @@ export default function ItemsToUsers({
         itemPrice: newTest?.price,
         itemQuantity: currentItemsToUser?.quantity,
       };
-      setCurrentItems((prevCurrentItems) => {
-        const newCurrentItems = [...prevCurrentItems, newResult];
-        return newCurrentItems;
-      });
+      // setCurrentItems((prevCurrentItems) => {
+      //   const newCurrentItems = [...prevCurrentItems, newResult];
+      //   return newCurrentItems;
+      // });
     }
 
-    console.log("newTest: ", newTest);
+    // console.log("newTest: ", newTest);
     // });
     // console.log("test: ", test);
 
@@ -106,7 +106,7 @@ export default function ItemsToUsers({
   }, []);
 
   useEffect(() => {
-    console.log("currentItems: ", currentItems);
+    // console.log("currentItems: ", currentItems);
   }, [currentItems]);
 
   return (
