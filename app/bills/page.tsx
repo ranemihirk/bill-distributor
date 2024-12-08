@@ -155,7 +155,7 @@ export default function BillsPage() {
     <div>
       <h1 className="text-4xl lg:text-6xl font-bold text-center">Invoice</h1>
       <table className="table-auto w-full text-center">
-        <tr className="text-3xl">
+        <tr className="lg:text-3xl bg-black text-white dark:bg-white dark:text-black">
           <th className="border">Item</th>
           <th className="border">Rate</th>
           <th className="border">Quantity</th>
@@ -172,7 +172,7 @@ export default function BillsPage() {
             </tr>
           ))}
         <tr>
-          <th className="border text-xl" colSpan={2}>
+          <th className="border lg:text-xl" colSpan={2}>
             Sub Total
           </th>
           <th className="border" colSpan={2}>
@@ -183,7 +183,7 @@ export default function BillsPage() {
           taxes.length > 0 &&
           taxes.map((item) => (
             <tr key={"tax_" + item.taxType}>
-              <th className="border text-xl" colSpan={2}>
+              <th className="border lg:text-xl" colSpan={2}>
                 {item.taxType} {item.taxPercentage}% on {subTotal}
               </th>
               <th className="border" colSpan={2}>
@@ -192,7 +192,7 @@ export default function BillsPage() {
             </tr>
           ))}
         <tr>
-          <th className="border text-xl" colSpan={2}>
+          <th className="border lg:text-xl" colSpan={2}>
             Bill Total
           </th>
           <th className="border" colSpan={2}>
@@ -200,7 +200,7 @@ export default function BillsPage() {
           </th>
         </tr>
         <tr>
-          <th className="border text-xl" colSpan={2}>
+          <th className="border lg:text-xl" colSpan={2}>
             Convinience Fee
           </th>
           <th className="border" colSpan={2}>
@@ -208,7 +208,7 @@ export default function BillsPage() {
           </th>
         </tr>
         <tr>
-          <th className="border text-xl" colSpan={2}>
+          <th className="border lg:text-xl" colSpan={2}>
             Bill Paid
           </th>
           <th className="border" colSpan={2}>

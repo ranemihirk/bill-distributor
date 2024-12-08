@@ -121,7 +121,7 @@ export default function BillToUserInfo({
 
   return (
     <table className="table-auto w-full text-center">
-      <tr className="text-3xl">
+      <tr className="lg:text-3xl  bg-black text-white dark:bg-white dark:text-black">
         <th className="border">User</th>
         <th className="border">Order</th>
       </tr>
@@ -134,10 +134,10 @@ export default function BillToUserInfo({
         currentItemsToUser.map((current) => (
           <>
             <tr>
-              <td className="border">{current.user?.name}</td>
+              <td className="border font-bold lg:text-xl">{current.user?.name}</td>
               <td className="border">
                 <table className="w-full">
-                  <tr>
+                  <tr className=" bg-black text-white dark:bg-white dark:text-black">
                     <th className="border">Item</th>
                     <th className="border">Rate</th>
                     <th className="border">Quantity</th>
@@ -155,7 +155,7 @@ export default function BillToUserInfo({
                       </tr>
                     </>
                   ))}
-                  <tr>
+                  <tr className="lg:text-xl">
                     <th className="border" colSpan={2}>
                       Convinience Fee
                     </th>
@@ -163,7 +163,7 @@ export default function BillToUserInfo({
                       {extraFee / currentItemsToUser.length}
                     </th>
                   </tr>
-                  <tr>
+                  <tr className="lg:text-xl">
                     <th className="border" colSpan={2}>
                       Bill Amount
                     </th>
@@ -171,7 +171,7 @@ export default function BillToUserInfo({
                       {getCurrentUserTotal(current.items)}
                     </th>
                   </tr>
-                  <tr>
+                  <tr className="lg:text-xl">
                     <th className="border" colSpan={2}>
                       Discounted Bill Amount
                     </th>
