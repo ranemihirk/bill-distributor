@@ -1,4 +1,4 @@
-import React, { lazy, useRef, useEffect, useState } from "react";
+import React, { lazy, useCallback, useEffect, useState } from "react";
 
 type UsersProp = {
   id: number;
@@ -64,11 +64,14 @@ export default function BillToUserInfo({
     CurrentItemsToUsersProp[]
   >([]);
 
-  const getCurrentUser = (userId: number) => {
-    if (users) {
-      return users.find((user) => user.id == userId);
-    }
-  };
+  const getCurrentUser = useCallback(
+    (userId: number) => {
+      if (users) {
+        return users.find((user) => user.id == userId);
+      }
+    },
+    [users]
+  );
 
   const getCurrentUserTotal = (currentItems: CurrentItemsToUsers[]) => {
     let billTotal: number = 0;
@@ -134,9 +137,11 @@ export default function BillToUserInfo({
         currentItemsToUser.map((current) => (
           <>
             <tr>
-              <td className="border font-bold lg:text-xl">{current.user?.name}</td>
+              <td className="border font-bold lg:text-xl">
+                {current.user?.name}
+              </td>
               <td className="border">
-                <table className="w-full">
+                <table className="w-full" id={`table_${current.user?.name}`}>
                   <tr className=" bg-black text-white dark:bg-white dark:text-black">
                     <th className="border">Item</th>
                     <th className="border">Rate</th>
