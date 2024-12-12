@@ -5,7 +5,7 @@ export type MainBillProps = {
   date: Date;
   amountPaid: number;
   items: ItemsProps[];
-  taxes: TaxProp[];
+  taxes: TaxesProp[];
   users: UsersProp[];
   userToItems: UserToItemsProp[];
   extraFee: ExtraFeeProp[];
