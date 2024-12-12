@@ -21,26 +21,32 @@ export default function Users() {
 
   const [addItem, setAddItem] = useState<boolean>(false);
 
-  const newItem = useRef<HTMLInputElement>("");
-  const newRate = useRef<HTMLInputElement>("");
-  const newQuantity = useRef<HTMLInputElement>("");
+  const newItem = useRef<HTMLInputElement>(null);
+  const newRate = useRef<HTMLInputElement>(null);
+  const newQuantity = useRef<HTMLInputElement>(null);
 
   const addNewItem = useCallback(() => {
-    if (
-      newItem.current.value != "" &&
-      newRate.current.value != "" &&
-      newQuantity.current.value != ""
-    ) {
-      setItems((prevItems) => {
-        const current: ItemsProps = {
-          id: randomIdGenerator(),
-          name: newItem.current.value,
-          rate: Number(newRate.current.value),
-          quantity: Number(newQuantity.current.value),
-        };
-        return [...prevItems, current];
-      });
-      resetToDefault();
+    if (newItem.current && newRate.current && newQuantity.current) {
+      if (
+        newItem.current.value != "" &&
+        newRate.current.value != "" &&
+        newQuantity.current.value != ""
+      ) {
+        setItems((prevItems) => {
+          if (newItem.current && newRate.current && newQuantity.current) {
+            const current: ItemsProps = {
+              id: randomIdGenerator(),
+              name: newItem.current.value,
+              rate: Number(newRate.current.value),
+              quantity: Number(newQuantity.current.value),
+            };
+            return [...prevItems, current];
+          } else {
+            return [...prevItems];
+          }
+        });
+        resetToDefault();
+      }
     }
   }, [
     items,
@@ -63,9 +69,11 @@ export default function Users() {
   );
   function resetToDefault() {
     setAddItem(false);
-    newItem.current.value = "";
-    newRate.current.value = "";
-    newQuantity.current.value = "";
+    if (newItem.current && newRate.current && newQuantity.current) {
+      newItem.current.value = "";
+      newRate.current.value = "";
+      newQuantity.current.value = "";
+    }
   }
 
   return (
@@ -170,7 +178,9 @@ export default function Users() {
                       className="size-full border rounded-md p-2"
                     />
                   </TableCell>
-                  <TableCell align="center" colSpan={1}>0</TableCell>
+                  <TableCell align="center" colSpan={1}>
+                    0
+                  </TableCell>
                   <TableCell align="center">
                     <div className="flex justify-evenly">
                       <IconButton aria-label="accept" onClick={addNewItem}>

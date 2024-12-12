@@ -25,19 +25,25 @@ export default function Users() {
 
   const [addUser, setAddUser] = useState<boolean>(false);
 
-  const newUser = useRef<HTMLInputElement>("");
+  const newUser = useRef<HTMLInputElement>(null);
 
   const addNewUser = useCallback(() => {
-    if (newUser.current.value != "") {
-      setUsers((prevUsers) => {
-        const current: UsersProp = {
-          id: randomIdGenerator(),
-          name: newUser.current.value,
-        };
-        return [...prevUsers, current];
-      });
-      newUser.current.value = "";
-      setAddUser(false);
+    if (newUser.current) {
+      if (newUser.current.value != "") {
+        setUsers((prevUsers) => {
+          if (newUser.current) {
+            const current: UsersProp = {
+              id: randomIdGenerator(),
+              name: newUser.current.value,
+            };
+            return [...prevUsers, current];
+          } else {
+            return [...prevUsers];
+          }
+        });
+        newUser.current.value = "";
+        setAddUser(false);
+      }
     }
   }, [users, setUsers, newUser.current, setAddUser, randomIdGenerator]);
 
@@ -121,7 +127,9 @@ export default function Users() {
                       <IconButton
                         aria-label="delete"
                         onClick={() => {
-                          newUser.current.value = "";
+                          if (newUser.current) {
+                            newUser.current.value = "";
+                          }
                           setAddUser(false);
                         }}
                       >

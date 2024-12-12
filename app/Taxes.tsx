@@ -21,27 +21,33 @@ export default function Users() {
 
   const [addTax, setAddTax] = useState<boolean>(false);
 
-  const newTaxType = useRef<HTMLInputElement>("");
-  const newTaxPercentage = useRef<HTMLInputElement>("");
+  const newTaxType = useRef<HTMLInputElement>(null);
+  const newTaxPercentage = useRef<HTMLInputElement>(null);
   const [tax, setTax] = useState<number>(0);
   const taxRef = useRef(0);
 
   const addNewTax = useCallback(() => {
-    if (
-      newTaxType.current.value != "" &&
-      newTaxPercentage.current.value != ""
-    ) {
-      setTaxes((prevItems) => {
-        const current: TaxesProp = {
-          id: randomIdGenerator(),
-          taxType: newTaxType.current.value,
-          taxPercentage: Number(newTaxPercentage.current.value),
-        };
-        return [...prevItems, current];
-      });
-      newTaxType.current.value = "";
-      newTaxPercentage.current.value = "";
-      setAddTax(!addTax);
+    if (newTaxType.current && newTaxPercentage.current) {
+      if (
+        newTaxType.current.value != "" &&
+        newTaxPercentage.current.value != ""
+      ) {
+        setTaxes((prevItems) => {
+          if (newTaxType.current && newTaxPercentage.current) {
+            const current: TaxesProp = {
+              id: randomIdGenerator(),
+              taxType: newTaxType.current.value,
+              taxPercentage: Number(newTaxPercentage.current.value),
+            };
+            return [...prevItems, current];
+          } else {
+            return [...prevItems];
+          }
+        });
+        newTaxType.current.value = "";
+        newTaxPercentage.current.value = "";
+        setAddTax(!addTax);
+      }
     }
   }, [
     taxes,
@@ -144,11 +150,16 @@ export default function Users() {
                       <IconButton aria-label="accept" onClick={addNewTax}>
                         <FontAwesomeIcon icon={faCheckCircle} />
                       </IconButton>
-                      <IconButton aria-label="delete" onClick={() => {
-                          newTaxType.current.value = "";
-                          newTaxPercentage.current.value = "";
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => {
+                          if (newTaxType.current && newTaxPercentage.current) {
+                            newTaxType.current.value = "";
+                            newTaxPercentage.current.value = "";
+                          }
                           setAddTax(false);
-                        }}>
+                        }}
+                      >
                         <FontAwesomeIcon
                           icon={faXmarkCircle}
                           className="text-inherit"
