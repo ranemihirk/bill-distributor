@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle";
 import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons/faXmarkCircle";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 
 type MainBillProps = {
   id: number;
@@ -21,6 +22,7 @@ type MainBillProps = {
 };
 
 type TaxProp = {
+  id: number;
   taxType: string;
   taxPercentage: number;
 };
@@ -90,6 +92,7 @@ export default function NewBillPage() {
     ) {
       setTaxes((prevItems) => {
         const current: TaxProp = {
+          id: randomIdGenerator(),
           taxType: newTaxType.current.value,
           taxPercentage: Number(newTaxPercentage.current.value),
         };
@@ -107,6 +110,28 @@ export default function NewBillPage() {
     newTaxType.current,
     newTaxPercentage.current,
   ]);
+
+  const deleteItem = useCallback(
+    (deleteItemId: number) => {
+      if (items.length > 0) {
+        setTaxes((prevItems) =>
+          prevItems.filter((item) => item.id != deleteItemId)
+        );
+      }
+    },
+    [items, setItems]
+  );
+
+  const deleteTax = useCallback(
+    (deleteItemId: number) => {
+      if (taxes.length > 0) {
+        setTaxes((prevTaxes) =>
+          prevTaxes.filter((tax) => tax.id != deleteItemId)
+        );
+      }
+    },
+    [taxes, setTaxes]
+  );
 
   function resetToDefault() {
     setAddItem(false);
@@ -126,11 +151,9 @@ export default function NewBillPage() {
 
   useEffect(() => {
     if (subTotal != 0 && taxes.length > 0) {
-      //   calculateSubTotal();
       taxes.map((tax) => {
         taxRef.current = taxRef.current + tax.taxPercentage;
       });
-      console.log("taxRef.current: ", taxRef.current);
       setTax(taxRef.current);
     }
   }, [taxes, subTotal]);
@@ -192,7 +215,7 @@ export default function NewBillPage() {
             <TableBody>
               {items.map((item) => (
                 <TableRow
-                  key={item.name}
+                  key={item.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell component="th" scope="row" align="center">
@@ -201,8 +224,19 @@ export default function NewBillPage() {
                   <TableCell align="center">{item.rate}</TableCell>
                   <TableCell align="center">{item.quantity}</TableCell>
                   <TableCell align="center">
-                    {/* <Link href={`/bills/${bill.id}`}>View</Link> */}
                     {item.rate * item.quantity}
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => deleteItem(item.id)}
+                      className="hover:bg-red/30"
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrashCan}
+                        className="text-inherit"
+                      />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -233,6 +267,7 @@ export default function NewBillPage() {
                         className="size-full border rounded-md p-2"
                       />
                     </TableCell>
+                    <TableCell align="center" colSpan={1}></TableCell>
                     <TableCell align="center">
                       <div className="flex justify-evenly">
                         <IconButton aria-label="accept" onClick={addNewItem}>
@@ -250,6 +285,19 @@ export default function NewBillPage() {
                       </div>
                     </TableCell>
                   </>
+                )}
+              </TableRow>
+              <TableRow classes={""}>
+                {!addItem && (
+                  <TableCell align="center" colSpan={5}>
+                    <Button
+                      className="w-full border border-dashed text-3xl"
+                      variant="text"
+                      onClick={() => setAddItem(!addItem)}
+                    >
+                      +
+                    </Button>
+                  </TableCell>
                 )}
               </TableRow>
               {items.length > 0 && (
@@ -328,19 +376,6 @@ export default function NewBillPage() {
                   </TableCell>
                 </TableRow>
               )}
-              <TableRow classes={""}>
-                {!addItem && (
-                  <TableCell align="center" colSpan={5}>
-                    <Button
-                      className="w-full border border-dashed text-3xl"
-                      variant="text"
-                      onClick={() => setAddItem(!addItem)}
-                    >
-                      +
-                    </Button>
-                  </TableCell>
-                )}
-              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
@@ -390,6 +425,18 @@ export default function NewBillPage() {
                     {item.taxType}
                   </TableCell>
                   <TableCell align="center">{item.taxPercentage}%</TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => deleteTax(item.id)}
+                      className="hover:bg-red/30"
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrashCan}
+                        className="text-inherit"
+                      />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
               <TableRow classes={""}>
@@ -430,7 +477,6 @@ export default function NewBillPage() {
                   </>
                 )}
               </TableRow>
-
               <TableRow classes={""}>
                 {!addTax && (
                   <TableCell align="center" colSpan={3}>

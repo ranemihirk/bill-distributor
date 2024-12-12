@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import BillContextProvider from "./BillContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,15 +27,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>
-          Bill Distributor
-        </title>
+        <title>Bill Distributor</title>
         <link rel="icon" href="/assets/images/favicon.ico" sizes="any" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 lg:p-8`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 lg:p-8 h-[100vh]`}
       >
-        {children}
+        <BillContextProvider>{children}</BillContextProvider>
       </body>
     </html>
   );

@@ -1,4 +1,3 @@
 {
-  "/bills/new/page": "app/bills/new/page.js",
   "/bills/[bill_id]/page": "app/bills/[bill_id]/page.js"
 }
