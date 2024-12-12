@@ -6,11 +6,20 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/bills/[bill_id]/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/bills/[bill_id]/page.css",
-      "static/chunks/app/bills/[bill_id]/page.js"
+      "static/chunks/app/page.js"
+    ],
+    "/bills/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/bills/page.js"
+    ],
+    "/bills/new/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/bills/new/page.js"
     ]
   }
 }

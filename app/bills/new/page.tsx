@@ -28,143 +28,144 @@ type TaxProp = {
 };
 
 export default function NewBillPage() {
-  const [addItem, setAddItem] = useState<boolean>(false);
-  const [items, setItems] = useState<MainBillProps[]>([]);
+  // const [addItem, setAddItem] = useState<boolean>(false);
+  // const [items, setItems] = useState<MainBillProps[]>([]);
 
-  const [addTax, setAddTax] = useState<boolean>(false);
-  const [taxes, setTaxes] = useState<TaxProp[]>([]);
+  // const [addTax, setAddTax] = useState<boolean>(false);
+  // const [taxes, setTaxes] = useState<TaxProp[]>([]);
 
-  const newItem = useRef<HTMLInputElement>("");
-  const newRate = useRef<HTMLInputElement>("");
-  const newQuantity = useRef<HTMLInputElement>("");
+  // const newItem = useRef<HTMLInputElement>("");
+  // const newRate = useRef<HTMLInputElement>("");
+  // const newQuantity = useRef<HTMLInputElement>("");
 
-  const newTaxType = useRef<HTMLInputElement>("");
-  const newTaxPercentage = useRef<HTMLInputElement>("");
+  // const newTaxType = useRef<HTMLInputElement>("");
+  // const newTaxPercentage = useRef<HTMLInputElement>("");
 
-  const [subTotal, setSubTotal] = useState<number>(0);
-  const subTotalRef = useRef(0);
+  // const [subTotal, setSubTotal] = useState<number>(0);
+  // const subTotalRef = useRef(0);
 
-  const [tax, setTax] = useState<number>(0);
-  const taxRef = useRef(0);
+  // const [tax, setTax] = useState<number>(0);
+  // const taxRef = useRef(0);
 
-  function randomIdGenerator() {
-    return Math.floor(Math.random() * 1000000) + 1;
-  }
+  // function randomIdGenerator() {
+  //   return Math.floor(Math.random() * 1000000) + 1;
+  // }
 
-  const addNewItem = useCallback(() => {
-    if (
-      newItem.current.value != "" &&
-      newRate.current.value != "" &&
-      newQuantity.current.value != ""
-    ) {
-      setItems((prevItems) => {
-        const current: MainBillProps = {
-          id: randomIdGenerator(),
-          name: newItem.current.value,
-          rate: Number(newRate.current.value),
-          quantity: Number(newQuantity.current.value),
-        };
-        return [...prevItems, current];
-      });
-      resetToDefault();
-    }
-  }, [
-    items,
-    setItems,
-    newItem.current,
-    newRate.current,
-    newQuantity.current,
-    resetToDefault,
-    randomIdGenerator,
-  ]);
+  // const addNewItem = useCallback(() => {
+  //   if (
+  //     newItem.current.value != "" &&
+  //     newRate.current.value != "" &&
+  //     newQuantity.current.value != ""
+  //   ) {
+  //     setItems((prevItems) => {
+  //       const current: MainBillProps = {
+  //         id: randomIdGenerator(),
+  //         name: newItem.current.value,
+  //         rate: Number(newRate.current.value),
+  //         quantity: Number(newQuantity.current.value),
+  //       };
+  //       return [...prevItems, current];
+  //     });
+  //     resetToDefault();
+  //   }
+  // }, [
+  //   items,
+  //   setItems,
+  //   newItem.current,
+  //   newRate.current,
+  //   newQuantity.current,
+  //   resetToDefault,
+  //   randomIdGenerator,
+  // ]);
 
-  const calculateSubTotal = useCallback(() => {
-    items.map((item) => {
-      subTotalRef.current = subTotalRef.current + item.rate * item.quantity;
-    });
-    setSubTotal(subTotalRef.current);
-  }, [items, setSubTotal]);
+  // const calculateSubTotal = useCallback(() => {
+  //   items.map((item) => {
+  //     subTotalRef.current = subTotalRef.current + item.rate * item.quantity;
+  //   });
+  //   setSubTotal(subTotalRef.current);
+  // }, [items, setSubTotal]);
 
-  const addNewTax = useCallback(() => {
-    if (
-      newTaxType.current.value != "" &&
-      newTaxPercentage.current.value != ""
-    ) {
-      setTaxes((prevItems) => {
-        const current: TaxProp = {
-          id: randomIdGenerator(),
-          taxType: newTaxType.current.value,
-          taxPercentage: Number(newTaxPercentage.current.value),
-        };
-        return [...prevItems, current];
-      });
-      newTaxType.current.value = "";
-      newTaxPercentage.current.value = "";
-      setAddTax(!addTax);
-    }
-  }, [
-    taxes,
-    setTaxes,
-    addTax,
-    setAddTax,
-    newTaxType.current,
-    newTaxPercentage.current,
-  ]);
+  // const addNewTax = useCallback(() => {
+  //   if (
+  //     newTaxType.current.value != "" &&
+  //     newTaxPercentage.current.value != ""
+  //   ) {
+  //     setTaxes((prevItems) => {
+  //       const current: TaxProp = {
+  //         id: randomIdGenerator(),
+  //         taxType: newTaxType.current.value,
+  //         taxPercentage: Number(newTaxPercentage.current.value),
+  //       };
+  //       return [...prevItems, current];
+  //     });
+  //     newTaxType.current.value = "";
+  //     newTaxPercentage.current.value = "";
+  //     setAddTax(!addTax);
+  //   }
+  // }, [
+  //   taxes,
+  //   setTaxes,
+  //   addTax,
+  //   setAddTax,
+  //   newTaxType.current,
+  //   newTaxPercentage.current,
+  // ]);
 
-  const deleteItem = useCallback(
-    (deleteItemId: number) => {
-      if (items.length > 0) {
-        setTaxes((prevItems) =>
-          prevItems.filter((item) => item.id != deleteItemId)
-        );
-      }
-    },
-    [items, setItems]
-  );
+  // const deleteItem = useCallback(
+  //   (deleteItemId: number) => {
+  //     if (items.length > 0) {
+  //       setTaxes((prevItems) =>
+  //         prevItems.filter((item) => item.id != deleteItemId)
+  //       );
+  //     }
+  //   },
+  //   [items, setItems]
+  // );
 
-  const deleteTax = useCallback(
-    (deleteItemId: number) => {
-      if (taxes.length > 0) {
-        setTaxes((prevTaxes) =>
-          prevTaxes.filter((tax) => tax.id != deleteItemId)
-        );
-      }
-    },
-    [taxes, setTaxes]
-  );
+  // const deleteTax = useCallback(
+  //   (deleteItemId: number) => {
+  //     if (taxes.length > 0) {
+  //       setTaxes((prevTaxes) =>
+  //         prevTaxes.filter((tax) => tax.id != deleteItemId)
+  //       );
+  //     }
+  //   },
+  //   [taxes, setTaxes]
+  // );
 
-  function resetToDefault() {
-    setAddItem(false);
-    setAddTax(false);
-    newItem.current.value = "";
-    newRate.current.value = "";
-    newQuantity.current.value = "";
-    newTaxType.current.value = "";
-    newTaxPercentage.current.value = "";
-  }
+  // function resetToDefault() {
+  //   setAddItem(false);
+  //   setAddTax(false);
+  //   newItem.current.value = "";
+  //   newRate.current.value = "";
+  //   newQuantity.current.value = "";
+  //   newTaxType.current.value = "";
+  //   newTaxPercentage.current.value = "";
+  // }
 
-  useEffect(() => {
-    if (items.length > 0) {
-      calculateSubTotal();
-    }
-  }, [items]);
+  // useEffect(() => {
+  //   if (items.length > 0) {
+  //     calculateSubTotal();
+  //   }
+  // }, [items]);
 
-  useEffect(() => {
-    if (subTotal != 0 && taxes.length > 0) {
-      taxes.map((tax) => {
-        taxRef.current = taxRef.current + tax.taxPercentage;
-      });
-      setTax(taxRef.current);
-    }
-  }, [taxes, subTotal]);
+  // useEffect(() => {
+  //   if (subTotal != 0 && taxes.length > 0) {
+  //     taxes.map((tax) => {
+  //       taxRef.current = taxRef.current + tax.taxPercentage;
+  //     });
+  //     setTax(taxRef.current);
+  //   }
+  // }, [taxes, subTotal]);
 
   return (
     <>
-      <h1 className="text-center text-bold text-3xl py-8 bg-dark text-light rounded-lg">
+    <div></div>
+      {/* <h1 className="text-center text-bold text-3xl py-8 bg-dark text-light rounded-lg">
         New Bill
       </h1>
 
-      {/* Add Items */}
+      {/* Add Items 
       <div className="mt-8">
         <h3 className="text-bold text-center text-2xl">Add Items</h3>
         <TableContainer component={Paper}>
@@ -381,7 +382,7 @@ export default function NewBillPage() {
         </TableContainer>
       </div>
 
-      {/* Add Taxes */}
+      {/* Add Taxes 
       <div className="mt-8">
         <h3 className="text-bold text-center text-2xl">Add Taxes</h3>
         <TableContainer component={Paper}>
@@ -493,7 +494,7 @@ export default function NewBillPage() {
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      </div> */}
     </>
   );
 }
