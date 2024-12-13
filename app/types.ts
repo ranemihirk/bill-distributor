@@ -1,9 +1,9 @@
 export type MainBillProps = {
-  id: number;
-  name: string;
-  amount: number;
-  date: Date;
-  amountPaid: number;
+  id: number | null;
+  title: string;
+  billTotal: number;
+  dated: Date;
+  billAmountPaid: number;
   items: ItemsProps[];
   taxes: TaxesProp[];
   users: UsersProp[];

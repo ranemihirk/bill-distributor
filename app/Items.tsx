@@ -78,31 +78,31 @@ export default function Users() {
 
   return (
     <div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className="">
         <Table
           aria-label="simple table"
           className="shadow-inner border border-light"
-          sx={{ tableLayout: "fixed" }}
+          
         >
           <TableHead className="bg-gray rounded-t-md">
             <TableRow className="text-bold text-light">
               <TableCell
                 align="center"
-                sx={{ fontWeight: 700 }}
+                sx={{ fontWeight: 700, minWidth: '100px' }}
                 className="text-inherit"
               >
                 Items
               </TableCell>
               <TableCell
                 align="center"
-                sx={{ fontWeight: 700 }}
+                sx={{ fontWeight: 700, minWidth: '100px' }}
                 className="text-inherit"
               >
                 Rate
               </TableCell>
               <TableCell
                 align="center"
-                sx={{ fontWeight: 700 }}
+                sx={{ fontWeight: 700, minWidth: '100px' }}
                 className="text-inherit"
               >
                 Quantity

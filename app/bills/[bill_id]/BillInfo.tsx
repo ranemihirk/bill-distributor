@@ -14,7 +14,6 @@ export default function BillInfoPage() {
     useBillContext();
 
   const [subTotal, setSubTotal] = useState<number>(0);
-  const [billTotal, setBillTotal] = useState<number>(0);
   const [tax, setTax] = useState<number>(0);
 
   const extraFee = 30;
@@ -27,150 +26,156 @@ export default function BillInfoPage() {
   }, [items]);
 
   useEffect(() => {
-    if (subTotal != 0 && taxes.length > 0) {
-        const current = calculateBillTax();
-        console.log('current tax: ', current);
-      setTax(current);
+    if (subTotal != 0) {
+      if (taxes.length > 0) {
+        setTax(calculateBillTax());
+      } else {
+        setTax(0);
+      }
     }
   }, [taxes, subTotal]);
 
   return (
     <>
-      <TableContainer component={Paper} className="lg:rounded-3xl">
-        <Table
-          aria-label="simple table"
-          className="shadow-inner border text-light bg-dark border-light"
-          sx={{ tableLayout: "fixed" }}
-        >
-          <TableHead className="bg-light rounded-t-md">
-            <TableRow className="text-bold text-dark border-x-4">
-              <TableCell
-                align="center"
-                sx={{ fontWeight: 700 }}
-                className="text-inherit"
-              >
-                Items
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontWeight: 700 }}
-                className="text-inherit"
-              >
-                Rate
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontWeight: 700 }}
-                className="text-inherit"
-              >
-                Quantity
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontWeight: 700 }}
-                className="text-inherit"
-              >
-                Amount
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((item) => (
-              <TableRow
-                key={item.id}
-                className="text-inherit"
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+      {items.length > 0 && (
+        <TableContainer component={Paper} className="lg:rounded-3xl">
+          <Table
+            aria-label="simple table"
+            className="shadow-inner border text-light bg-dark border-light"
+            sx={{ tableLayout: "fixed" }}
+          >
+            <TableHead className="bg-light rounded-t-md">
+              <TableRow className="text-bold text-dark border-x-4">
                 <TableCell
-                  component="th"
-                  scope="row"
                   align="center"
+                  sx={{ fontWeight: 700 }}
                   className="text-inherit"
                 >
-                  {item.name}
+                  Items
                 </TableCell>
-                <TableCell align="center" className="text-inherit">
-                  {item.rate}
+                <TableCell
+                  align="center"
+                  sx={{ fontWeight: 700 }}
+                  className="text-inherit"
+                >
+                  Rate
                 </TableCell>
-                <TableCell align="center" className="text-inherit">
-                  {item.quantity}
+                <TableCell
+                  align="center"
+                  sx={{ fontWeight: 700 }}
+                  className="text-inherit"
+                >
+                  Quantity
                 </TableCell>
-                <TableCell align="center" className="text-inherit">
-                  {item.rate * item.quantity}
+                <TableCell
+                  align="center"
+                  sx={{ fontWeight: 700 }}
+                  className="text-inherit"
+                >
+                  Amount
                 </TableCell>
               </TableRow>
-            ))}
+            </TableHead>
+            <TableBody>
+              {items.map((item) => (
+                <TableRow
+                  key={item.id}
+                  className="text-inherit"
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    align="center"
+                    className="text-inherit"
+                  >
+                    {item.name}
+                  </TableCell>
+                  <TableCell align="center" className="text-inherit">
+                    {item.rate}
+                  </TableCell>
+                  <TableCell align="center" className="text-inherit">
+                    {item.quantity}
+                  </TableCell>
+                  <TableCell align="center" className="text-inherit">
+                    {item.rate * item.quantity}
+                  </TableCell>
+                </TableRow>
+              ))}
 
-            {items.length > 0 && (
-              <TableRow classes={""}>
-                <TableCell
-                  align="center"
-                  colSpan={2}
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: tax == 0 ? 24 : "inherit",
-                  }}
-                  className="text-inherit"
-                >
-                  Sub Total
-                </TableCell>
-                <TableCell
-                  align="center"
-                  colSpan={2}
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: tax == 0 ? 24 : "inherit",
-                  }}
-                  className="text-inherit"
-                >
-                  {subTotal}
-                </TableCell>
-              </TableRow>
-            )}
-            {taxes.length > 0 &&
-              taxes.map((current) => (
+              {items.length > 0 && (
+                <TableRow classes={""}>
+                  <TableCell
+                    align="center"
+                    colSpan={2}
+                    sx={{
+                      fontWeight: 700,
+                    }}
+                    className={`text-inherit ${
+                      tax == 0 && "text-xl lg:text-2xl"
+                    }`}
+                  >
+                    Sub Total
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    colSpan={2}
+                    sx={{
+                      fontWeight: 700,
+                    }}
+                    className={`text-inherit ${
+                      tax == 0 && "text-xl lg:text-2xl"
+                    }`}
+                  >
+                    {subTotal}
+                  </TableCell>
+                </TableRow>
+              )}
+              {taxes.length > 0 &&
+                taxes.map((current) => (
+                  <TableRow classes={""}>
+                    <TableCell
+                      align="center"
+                      colSpan={2}
+                      sx={{ fontWeight: 700 }}
+                      className="text-inherit"
+                    >
+                      {current.taxType}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      colSpan={2}
+                      sx={{ fontWeight: 700 }}
+                      className="text-inherit"
+                    >
+                      {current.taxPercentage}%
+                    </TableCell>
+                  </TableRow>
+                ))}
+              {items.length > 0 && taxes.length > 0 && (
                 <TableRow classes={""}>
                   <TableCell
                     align="center"
                     colSpan={2}
                     sx={{ fontWeight: 700 }}
-                    className="text-inherit"
+                    className="text-inherit text-xl lg:text-2xl"
                   >
-                    {current.taxType}
+                    Bill Total
                   </TableCell>
                   <TableCell
                     align="center"
                     colSpan={2}
                     sx={{ fontWeight: 700 }}
-                    className="text-inherit"
+                    className="text-inherit text-xl lg:text-2xl"
                   >
-                    {current.taxPercentage}%
+                    {subTotal + (subTotal * tax) / 100}
                   </TableCell>
                 </TableRow>
-              ))}
-            {items.length > 0 && taxes.length > 0 && (
-              <TableRow classes={""}>
-                <TableCell
-                  align="center"
-                  colSpan={2}
-                  sx={{ fontWeight: 700, fontSize: 24 }}
-                  className="text-inherit"
-                >
-                  Bill Total
-                </TableCell>
-                <TableCell
-                  align="center"
-                  colSpan={2}
-                  sx={{ fontWeight: 700, fontSize: 24 }}
-                  className="text-inherit"
-                >
-                  {subTotal + (subTotal * tax) / 100}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   );
 }
