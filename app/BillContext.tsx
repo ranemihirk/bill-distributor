@@ -15,15 +15,18 @@ import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "./types";
 import fetchLocalStorage from "./fetchLocalStorage";
 
 type BillContext = {
-  bills: MainBillProps[];
-  currentBill: MainBillProps | object;
+  bills: MainBillProps[] | null;
+  currentBill: MainBillProps | null;
+  billId: number;
   billTitle: string;
   billAmountPaid: number;
   billDate: Date;
   users: UsersProp[];
   items: ItemsProps[];
   taxes: TaxesProp[];
-  setCurrentBill: Dispatch<SetStateAction<MainBillProps | object>>;
+  setBills: Dispatch<SetStateAction<MainBillProps[] | null>>;
+  setCurrentBill: Dispatch<SetStateAction<MainBillProps | null>>;
+  setBillId: Dispatch<SetStateAction<number>>;
   setBillTitle: Dispatch<SetStateAction<string>>;
   setBillAmountPaid: Dispatch<SetStateAction<number>>;
   setBillDatePaid: Dispatch<SetStateAction<Date>>;
@@ -60,9 +63,13 @@ export default function BillContextProvider({
 }: BillContextProviderProps) {
   // const [bills, setBills] = useState<MainBillProps | null>(null);
 
-  const [bills, setBills] = fetchLocalStorage<MainBillProps[]>("bills", []);
+  const [bills, setBills] = fetchLocalStorage<MainBillProps[] | null>(
+    "bills",
+    null
+  );
 
-  const [currentBill, setCurrentBill] = useState<MainBillProps | object>({});
+  const [currentBill, setCurrentBill] = useState<MainBillProps | null>(null);
+  const [billId, setBillId] = useState<number>(0);
   const [billTitle, setBillTitle] = useState<string>("");
   const [billAmountPaid, setBillAmountPaid] = useState<number>(0);
   const [billDate, setBillDatePaid] = useState<Date>(new Date());
@@ -158,6 +165,20 @@ export default function BillContextProvider({
     return Math.floor(Math.random() * 1000000) + 1;
   }
 
+  const fetchBillData = () => {
+    if (bills && bills.length > 0) {
+      if (billId != 0) {
+        const current = bills.filter((bill) => bill.id == billId)[0];
+        if (current) {
+          setCurrentBill(current);
+          setBillTitle(current.title);
+          setBillAmountPaid(current.billAmountPaid);
+          setBillDatePaid(current.dated);
+        }
+      }
+    }
+  };
+
   const calculateSubTotal = useCallback(() => {
     if (items.length > 0) {
       items.map((item) => {
@@ -178,18 +199,42 @@ export default function BillContextProvider({
 
   const saveBillData = useCallback(() => {
     if (billTitle != "" && billAmountPaid != 0 && billDate instanceof Date) {
-      const current: MainBillProps = defaultBill;
-      current.id = randomIdGenerator();
-      current.billAmountPaid = billAmountPaid;
-      current.title = billTitle;
-      current.dated = new Date();
-      setCurrentBill(current);
+      if (billId == 0) {
+        const current: MainBillProps = defaultBill;
+        current.id = randomIdGenerator();
+        current.billAmountPaid = billAmountPaid;
+        current.title = billTitle;
+        current.dated = billDate;
+        setCurrentBill(current);
+      } else {
+        setCurrentBill((prevCurrentBill) => {
+          const current = prevCurrentBill;
+          if (current) {
+            current.title = billTitle;
+            current.billAmountPaid = billAmountPaid;
+            current.dated = billDate;
+          }
+          return current;
+        });
+      }
     }
   }, [defaultBill, bills, setBills]);
 
   useEffect(() => {
+    fetchBillData();
+  }, [billId]);
+
+  useEffect(() => {
     if (currentBill && Object.keys(currentBill).length > 0) {
-      // setBills();
+      setBills((prevBills) => {
+        if (prevBills) {
+          const current = [...prevBills, currentBill];
+          return current;
+        } else {
+          const current = [currentBill];
+          return current;
+        }
+      });
     }
   }, [currentBill, users, items, taxes]);
 
@@ -198,13 +243,16 @@ export default function BillContextProvider({
       value={{
         bills,
         currentBill,
+        billId,
         billTitle,
         billAmountPaid,
         billDate,
         users,
         items,
         taxes,
+        setBills,
         setCurrentBill,
+        setBillId,
         setBillTitle,
         setBillAmountPaid,
         setBillDatePaid,

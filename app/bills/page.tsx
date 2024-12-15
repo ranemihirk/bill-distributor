@@ -37,9 +37,31 @@ export default function BillsPage() {
     saveBillData,
     setBillTitle,
     setBillAmountPaid,
+    setBills,
   } = useBillContext();
 
   console.log("bills: ", bills);
+
+  const getDate = (currentDate: Date) => {
+    console.log("currentDate: ", currentDate, typeof currentDate);
+    let date;
+    if (currentDate) {
+      date = new Date(currentDate);
+    } else {
+      date = new Date();
+    }
+
+    const newDate = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+    return newDate;
+  };
+
+  const deleteBill = (billId: number | null) => {
+    if (billId && bills && bills.length > 0) {
+      const current = bills.filter((bill) => bill.id != billId);
+      setBills(current);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-between mb-16">
@@ -59,14 +81,22 @@ export default function BillsPage() {
         >
           <TableHead>
             <TableRow className="bg-gray text-light">
-              <TableCell align="center" className="text-inherit font-bold">Bills</TableCell>
-              <TableCell align="center" className="text-inherit font-bold">Amount</TableCell>
-              <TableCell align="center" className="text-inherit font-bold">Date</TableCell>
-              <TableCell align="center" className="text-inherit font-bold">Actions</TableCell>
+              <TableCell align="center" className="text-inherit font-bold">
+                Bills
+              </TableCell>
+              <TableCell align="center" className="text-inherit font-bold">
+                Amount
+              </TableCell>
+              <TableCell align="center" className="text-inherit font-bold">
+                Date
+              </TableCell>
+              <TableCell align="center" className="text-inherit font-bold">
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {bills.length > 0 ? (
+            {bills && bills.length > 0 ? (
               bills.map((bill) => (
                 <TableRow
                   key={bill.id}
@@ -77,8 +107,9 @@ export default function BillsPage() {
                   </TableCell>
                   <TableCell align="center">{bill.billTotal}</TableCell>
                   <TableCell align="center">
-                    {bill.dated?.getDate()} / {bill.dated?.getMonth()} /{" "}
-                    {bill.dated?.getFullYear()}
+                    {/* {bill.dated?.getDate()} / {bill.dated?.getMonth()} /{" "}
+                    {bill.dated?.getFullYear()} */}
+                    {getDate(bill.dated)}
                   </TableCell>
                   <TableCell align="center">
                     <Link
@@ -87,7 +118,12 @@ export default function BillsPage() {
                     >
                       <FontAwesomeIcon icon={faEye} /> View
                     </Link>
-                    <IconButton aria-label="delete">
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => {
+                        deleteBill(bill.id);
+                      }}
+                    >
                       <FontAwesomeIcon
                         icon={faTrashCan}
                         className="text-inherit"

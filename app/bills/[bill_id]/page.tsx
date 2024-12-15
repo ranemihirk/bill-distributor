@@ -27,10 +27,15 @@ import "./bill.css";
 const extraFee = 30;
 const billPaid = 662.5;
 
-export default function BillPage() {
+export default function BillPage({
+  params,
+}: {
+  params: Promise<{ bill_id: string }>;
+}) {
   const {
     bills,
     currentBill,
+    billId,
     billTitle,
     billAmountPaid,
     billDate,
@@ -38,10 +43,15 @@ export default function BillPage() {
     items,
     taxes,
     saveBillData,
+    setBillId,
     setBillTitle,
     setBillAmountPaid,
     setBillDatePaid,
   } = useBillContext();
+
+  params.then((response) => {
+    setBillId(parseInt(response.bill_id));
+  });
 
   const billTitleRef = useRef<HTMLInputElement>(null);
   const billPaidRef = useRef<HTMLInputElement>(null);
@@ -111,6 +121,7 @@ export default function BillPage() {
               label="Bill Name"
               variant="outlined"
               inputRef={billTitleRef}
+              defaultValue={billTitle}
               onChange={onBillTitleChange}
               className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
               slotProps={{
@@ -136,6 +147,7 @@ export default function BillPage() {
               label="Bill Amount Paid"
               variant="outlined"
               inputRef={billPaidRef}
+              defaultValue={billAmountPaid}
               onChange={onBillPaidChange}
               className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
               slotProps={{
@@ -162,6 +174,7 @@ export default function BillPage() {
               placeholder="DD/MM/YYYY"
               variant="outlined"
               inputRef={billDateRef}
+              defaultValue={billDate}
               onChange={onBillDateChange}
               className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
               slotProps={{
