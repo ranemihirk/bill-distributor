@@ -54,7 +54,9 @@ export default function BillPage({
   });
 
   const [expanded, setExpanded] = React.useState<string | false>(false);
-  const [formattedToday, setFormattedToday] = useState<string>(new Date().toISOString().split("T")[0]);
+  const [formattedToday, setFormattedToday] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
 
   const billTitleRef = useRef<HTMLInputElement>(null);
   const billPaidRef = useRef<HTMLInputElement>(null);
@@ -154,7 +156,7 @@ export default function BillPage({
               label="Bill Amount Paid"
               variant="outlined"
               inputRef={billPaidRef}
-              defaultValue={billAmountPaid}
+              defaultValue={billAmountPaid == 0 ? "" : billAmountPaid}
               onChange={onBillPaidChange}
               className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
               slotProps={{
