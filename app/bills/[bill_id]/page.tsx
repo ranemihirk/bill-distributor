@@ -11,8 +11,10 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+import Link from "next/link";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons/faPenToSquare";
+import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
 import { faCaretSquareDown } from "@fortawesome/free-regular-svg-icons/faCaretSquareDown";
 
 import BillToUserInfo from "./BillToUserInfo";
@@ -119,65 +121,73 @@ export default function BillPage({
   return (
     <div className="bg-dark rounded-xl py-4 lg:p-8 h-full overflow-hidden overflow-y-auto scroll-smooth">
       <div className="flex justify-center mb-4 lg:mb-8">
-        <fieldset className="flex justify-center flex-wrap lg:w-[30%] gap-2 lg:gap-4 border border-light rounded-3xl p-4 lg:p-8 mx-4 lg:mx-0">
-          <legend className="text-light bg-dark p-2 font-bold text-2xl">
-            {billTitle != "" && `${billTitle} -`}{" "}
-            <span className="text-lg">Bill Info</span>
-          </legend>
-          <div className="rounded-3xl shadow-inner shadow-dark/50 w-full text-center">
-            <TextField
-              id="bill-name"
-              label="Bill Name"
-              variant="outlined"
-              inputRef={billTitleRef}
-              defaultValue={billTitle}
-              onChange={onBillTitleChange}
-              className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
-              slotProps={{
-                htmlInput: {
-                  className:
-                    "text-light bill-title bg-dark autofill:bg-dark border-light rounded-lg outline-none active:outline-none focus:outline-none",
-                },
-                inputLabel: {
-                  className:
-                    "text-light bill-title bg-dark rounded-md px-1 lg:px-2 autofill:bg-dark active:outline-none focus:outline-none outline-none",
-                },
-                select: {
-                  className:
-                    "border border-light bill-title rounded-lg active:outline-none focus:outline-none",
-                },
-              }}
-              sx={{ border: 1 }}
+        <div className="lg:w-[40%]">
+          <Link href="/bills">
+            <FontAwesomeIcon
+              icon={faArrowAltCircleLeft}
+              className="text-light"
+              size="lg"
             />
-          </div>
-          <div className="rounded-3xl shadow-inner shadow-dark/50 w-full text-center">
-            <TextField
-              id="bill-amount-paid"
-              label="Bill Amount Paid"
-              variant="outlined"
-              inputRef={billPaidRef}
-              defaultValue={billAmountPaid == 0 ? "" : billAmountPaid}
-              onChange={onBillPaidChange}
-              className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
-              slotProps={{
-                htmlInput: {
-                  className:
-                    "text-light bill-title bg-dark autofill:bg-dark border-light rounded-lg outline-none active:outline-none focus:outline-none",
-                },
-                inputLabel: {
-                  className:
-                    "text-light bill-title bg-dark rounded-md px-1 lg:px-2 autofill:bg-dark active:outline-none focus:outline-none outline-none",
-                },
-                select: {
-                  className:
-                    "border border-light bill-title rounded-lg active:outline-none focus:outline-none",
-                },
-              }}
-              sx={{ border: 1 }}
-            />
-          </div>
-          <div className="rounded-3xl flex justify-center shadow-inner shadow-dark/50 w-full text-center">
-            {/* <TextField
+          </Link>
+          <fieldset className="flex justify-center flex-wrap gap-2 lg:gap-4 border border-light rounded-3xl p-4 lg:p-8 mx-4 lg:mx-0">
+            <legend className="text-light bg-dark p-2 font-bold text-2xl">
+              {billTitle != "" && `${billTitle} -`}{" "}
+              <span className="text-lg">Bill Info</span>
+            </legend>
+            <div className="rounded-3xl shadow-inner shadow-dark/50 w-full text-center">
+              <TextField
+                id="bill-name"
+                label="Bill Name"
+                variant="outlined"
+                inputRef={billTitleRef}
+                defaultValue={billTitle}
+                onChange={onBillTitleChange}
+                className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
+                slotProps={{
+                  htmlInput: {
+                    className:
+                      "text-light bill-title bg-dark autofill:bg-dark border-light rounded-lg outline-none active:outline-none focus:outline-none",
+                  },
+                  inputLabel: {
+                    className:
+                      "text-light bill-title bg-dark rounded-md px-1 lg:px-2 autofill:bg-dark active:outline-none focus:outline-none outline-none",
+                  },
+                  select: {
+                    className:
+                      "border border-light bill-title rounded-lg active:outline-none focus:outline-none",
+                  },
+                }}
+                sx={{ border: 1 }}
+              />
+            </div>
+            <div className="rounded-3xl shadow-inner shadow-dark/50 w-full text-center">
+              <TextField
+                id="bill-amount-paid"
+                label="Bill Amount Paid"
+                variant="outlined"
+                inputRef={billPaidRef}
+                defaultValue={billAmountPaid == 0 ? "" : billAmountPaid}
+                onChange={onBillPaidChange}
+                className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
+                slotProps={{
+                  htmlInput: {
+                    className:
+                      "text-light bill-title bg-dark autofill:bg-dark border-light rounded-lg outline-none active:outline-none focus:outline-none",
+                  },
+                  inputLabel: {
+                    className:
+                      "text-light bill-title bg-dark rounded-md px-1 lg:px-2 autofill:bg-dark active:outline-none focus:outline-none outline-none",
+                  },
+                  select: {
+                    className:
+                      "border border-light bill-title rounded-lg active:outline-none focus:outline-none",
+                  },
+                }}
+                sx={{ border: 1 }}
+              />
+            </div>
+            <div className="rounded-3xl flex justify-center shadow-inner shadow-dark/50 w-full text-center">
+              {/* <TextField
               id="bill-date"
               label="Bill Date"
               placeholder="DD/MM/YYYY"
@@ -202,26 +212,27 @@ export default function BillPage({
               }}
               sx={{ border: 1 }}
             /> */}
-            <input
-              type="date"
-              id="bill-date"
-              name="bill-date"
-              className="bg-dark text-light border border-light px-6 py-3 text-xl rounded-lg"
-              ref={billDateRef}
-              max={formattedToday}
-              value={billDate.toString()}
-              onChange={onBillDateChange}
-            ></input>
-          </div>
-          <div className="rounded-3xl flex justify-center gap-2 shadow-inner shadow-dark/50 w-full">
-            <Button variant="outlined" onClick={resetBillData}>
-              Clear
-            </Button>
-            <Button variant="contained" onClick={saveBillData}>
-              Save
-            </Button>
-          </div>
-        </fieldset>
+              <input
+                type="date"
+                id="bill-date"
+                name="bill-date"
+                className="bg-dark text-light border border-light px-6 py-3 text-xl rounded-lg"
+                ref={billDateRef}
+                max={formattedToday}
+                value={billDate.toString()}
+                onChange={onBillDateChange}
+              ></input>
+            </div>
+            <div className="rounded-3xl flex justify-center gap-2 shadow-inner shadow-dark/50 w-full">
+              <Button variant="outlined" onClick={resetBillData}>
+                Clear
+              </Button>
+              <Button variant="contained" onClick={saveBillData}>
+                Save
+              </Button>
+            </div>
+          </fieldset>
+        </div>
       </div>
       {currentBill && Object.keys(currentBill).length > 0 && (
         <>
