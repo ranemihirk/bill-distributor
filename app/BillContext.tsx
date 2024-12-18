@@ -20,7 +20,7 @@ type BillContext = {
   billId: number;
   billTitle: string;
   billAmountPaid: number;
-  billDate: Date;
+  billDate: Date | string;
   users: UsersProp[];
   items: ItemsProps[];
   taxes: TaxesProp[];
@@ -29,7 +29,7 @@ type BillContext = {
   setBillId: Dispatch<SetStateAction<number>>;
   setBillTitle: Dispatch<SetStateAction<string>>;
   setBillAmountPaid: Dispatch<SetStateAction<number>>;
-  setBillDatePaid: Dispatch<SetStateAction<Date>>;
+  setBillDatePaid: Dispatch<SetStateAction<Date | string>>;
   saveBillData: () => void;
   setUsers: Dispatch<SetStateAction<UsersProp[]>>;
   setItems: Dispatch<SetStateAction<ItemsProps[]>>;
@@ -46,9 +46,9 @@ type BillContextProviderProps = {
 const defaultBill: MainBillProps = {
   id: 1,
   title: "",
-  billTotal: 2000,
+  billTotal: 0,
   dated: new Date(),
-  billAmountPaid: 600,
+  billAmountPaid: 0,
   items: [],
   taxes: [],
   users: [],
@@ -72,7 +72,7 @@ export default function BillContextProvider({
   const [billId, setBillId] = useState<number>(0);
   const [billTitle, setBillTitle] = useState<string>("");
   const [billAmountPaid, setBillAmountPaid] = useState<number>(0);
-  const [billDate, setBillDatePaid] = useState<Date>(new Date());
+  const [billDate, setBillDatePaid] = useState<Date | string>("");
   const [users, setUsers] = useState<UsersProp[]>([]);
   const [items, setItems] = useState<ItemsProps[]>([]);
   const [taxes, setTaxes] = useState<TaxesProp[]>([]);
@@ -181,6 +181,7 @@ export default function BillContextProvider({
 
   const calculateSubTotal = useCallback(() => {
     if (items.length > 0) {
+      subTotalRef.current = 0;
       items.map((item) => {
         subTotalRef.current = subTotalRef.current + item.rate * item.quantity;
       });
@@ -198,45 +199,134 @@ export default function BillContextProvider({
   }, [taxes]);
 
   const saveBillData = useCallback(() => {
+    console.log("saveBillData");
+    console.log(
+      'billTitle != "" && billAmountPaid != 0 && billDate instanceof Date: ',
+      billTitle != "" && billAmountPaid != 0 && billDate instanceof Date
+    );
     if (billTitle != "" && billAmountPaid != 0 && billDate instanceof Date) {
+      console.log("billId: ", billId);
       if (billId == 0) {
+        const currentBillId = randomIdGenerator();
+        setBillId(currentBillId);
         const current: MainBillProps = defaultBill;
-        current.id = randomIdGenerator();
+        current.id = currentBillId;
         current.billAmountPaid = billAmountPaid;
         current.title = billTitle;
         current.dated = billDate;
         setCurrentBill(current);
+        // setBills((prevBills) =>
+        //   prevBills ? [...prevBills, current] : [current]
+        // );
       } else {
-        setCurrentBill((prevCurrentBill) => {
-          const current = prevCurrentBill;
-          if (current) {
-            current.title = billTitle;
-            current.billAmountPaid = billAmountPaid;
-            current.dated = billDate;
-          }
-          return current;
-        });
+        if (currentBill) {
+          const current = currentBill;
+          current.title = billTitle;
+          current.billAmountPaid = billAmountPaid;
+          current.dated = billDate;
+          setCurrentBill(current);
+          // setBills((prevBills) => {
+          //   const editBill = prevBills;
+          //   if (editBill) {
+          //     editBill.map((bill) => (bill.id == billId ? current : bill));
+          //   }
+          //   return editBill;
+          // });
+        }
       }
     }
-  }, [defaultBill, bills, setBills]);
+  }, [
+    defaultBill,
+    billTitle,
+    billAmountPaid,
+    billDate,
+    currentBill,
+    bills,
+    randomIdGenerator,
+    setBillId,
+    setCurrentBill,
+    setBills,
+  ]);
+
+  const saveToBills = useCallback(() => {
+    console.log("saveToBills");
+    if (currentBill) {
+      setBills((prevBills) => {
+        console.log("prevBills: ", prevBills);
+        if (prevBills && prevBills.length > 0) {
+          let exists = prevBills.some((bill) => bill.id === billId);
+          console.log("yes prevBills: ", exists);
+          if (exists) {
+            return prevBills.map((bill) =>
+              bill.id == billId ? currentBill : bill
+            );
+          } else {
+            return [...prevBills, currentBill];
+          }
+        } else {
+          console.log("no prevBills");
+          return [currentBill];
+        }
+      });
+    }
+  }, [currentBill, bills, setBills]);
 
   useEffect(() => {
     fetchBillData();
   }, [billId]);
 
   useEffect(() => {
+    console.log("currentBill: ", currentBill);
     if (currentBill && Object.keys(currentBill).length > 0) {
-      setBills((prevBills) => {
-        if (prevBills) {
-          const current = [...prevBills, currentBill];
-          return current;
-        } else {
-          const current = [currentBill];
+      console.log("current biill exists");
+      // setBills((prevBills) => {
+      //   return prevBills && prevBills.length > 0
+      //     ? prevBills.map((bill) => (bill.id == billId ? currentBill : bill))
+      //     : [currentBill];
+      // });
+      setCurrentBill((prevCurrentBill) => {
+        const current: MainBillProps | null = prevCurrentBill;
+        if (current) {
+          console.log("yes current");
+          current.billAmountPaid = billAmountPaid;
+          current.users = users;
+          current.items = items;
+          current.taxes = taxes;
+          console.log("current: ", current);
           return current;
         }
+        return prevCurrentBill;
       });
     }
-  }, [currentBill, users, items, taxes]);
+  }, [users, items, taxes]);
+
+  useEffect(() => {
+    // setBills((prevBills) => {
+    //   const editBills: MainBillProps[] | null = prevBills;
+    //   console.log("editBills: ", editBills);
+    //   if (editBills) {
+    //     editBills.map((bill) => (bill.id == billId ? currentBill : bill));
+    //     return [...editBills];
+    //   } else {
+    //     return [currentBill];
+    //   }
+    // });
+    // setBills((prevBills) => {
+    //   if (prevBills) {
+    //     return prevBills.map((bill) =>
+    //       bill.id == billId ? currentBill : bill
+    //     );
+    //   } else {
+    //     return [currentBill];
+    //   }
+    // });
+    saveToBills();
+    // }
+  }, [currentBill?.users, currentBill?.items, currentBill?.taxes]);
+
+  useEffect(() => {
+    console.log("bills: ", bills);
+  }, [bills]);
 
   return (
     <BillContext.Provider

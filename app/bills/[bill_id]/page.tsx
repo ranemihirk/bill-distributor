@@ -53,11 +53,12 @@ export default function BillPage({
     setBillId(parseInt(response.bill_id));
   });
 
+  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [formattedToday, setFormattedToday] = useState<string>(new Date().toISOString().split("T")[0]);
+
   const billTitleRef = useRef<HTMLInputElement>(null);
   const billPaidRef = useRef<HTMLInputElement>(null);
   const billDateRef = useRef<HTMLInputElement>(null);
-
-  const [expanded, setExpanded] = React.useState<string | false>(false);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -106,6 +107,12 @@ export default function BillPage({
       setBillAmountPaid(0);
     }
   }
+
+  useEffect(() => {
+    // Set the maximum date to today's date
+    const today = new Date();
+    const formattedToday = today.toISOString().split("T")[0];
+  }, []);
 
   return (
     <div className="bg-dark rounded-xl py-4 lg:p-8 h-full overflow-hidden overflow-y-auto scroll-smooth">
@@ -168,7 +175,7 @@ export default function BillPage({
             />
           </div>
           <div className="rounded-3xl flex justify-center shadow-inner shadow-dark/50 w-full text-center">
-            <TextField
+            {/* <TextField
               id="bill-date"
               label="Bill Date"
               placeholder="DD/MM/YYYY"
@@ -192,7 +199,17 @@ export default function BillPage({
                 },
               }}
               sx={{ border: 1 }}
-            />
+            /> */}
+            <input
+              type="date"
+              id="bill-date"
+              name="bill-date"
+              className="bg-dark text-light border border-light px-6 py-3 text-xl rounded-lg"
+              ref={billDateRef}
+              max={formattedToday}
+              value={billDate.toString()}
+              onChange={onBillDateChange}
+            ></input>
           </div>
           <div className="rounded-3xl flex justify-center gap-2 shadow-inner shadow-dark/50 w-full">
             <Button variant="outlined" onClick={resetBillData}>
