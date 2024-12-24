@@ -187,31 +187,6 @@ export default function BillPage({
               />
             </div>
             <div className="rounded-3xl flex justify-center shadow-inner shadow-dark/50 w-full text-center">
-              {/* <TextField
-              id="bill-date"
-              label="Bill Date"
-              placeholder="DD/MM/YYYY"
-              variant="outlined"
-              inputRef={billDateRef}
-              defaultValue={billDate}
-              onChange={onBillDateChange}
-              className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
-              slotProps={{
-                htmlInput: {
-                  className:
-                    "text-light bill-title bg-dark autofill:bg-dark border-light rounded-lg outline-none active:outline-none focus:outline-none",
-                },
-                inputLabel: {
-                  className:
-                    "text-light bill-title bg-dark rounded-md px-1 lg:px-2 autofill:bg-dark active:outline-none focus:outline-none outline-none",
-                },
-                select: {
-                  className:
-                    "border border-light bill-title rounded-lg active:outline-none focus:outline-none",
-                },
-              }}
-              sx={{ border: 1 }}
-            /> */}
               <input
                 type="date"
                 id="bill-date"
@@ -219,7 +194,6 @@ export default function BillPage({
                 className="bg-dark text-light border border-light px-6 py-3 text-xl rounded-lg"
                 ref={billDateRef}
                 max={formattedToday}
-                value={billDate.toString()}
                 onChange={onBillDateChange}
               ></input>
             </div>

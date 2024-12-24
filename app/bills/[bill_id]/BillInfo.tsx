@@ -22,7 +22,6 @@ export default function BillInfoPage() {
   useEffect(() => {
     if (items.length > 0) {
       const current = calculateSubTotal();
-      console.log('sub total current: ', current);
       setSubTotal(current);
     }
   }, [items]);
