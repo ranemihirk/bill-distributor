@@ -230,9 +230,6 @@ export default function Users() {
                 </Button>
               </TableCell>
             </TableRow>
-            {/* <TableRow classes={`${!addTax ? "" : "hidden"}`}>
-              
-            </TableRow> */}
           </TableBody>
         </Table>
       </TableContainer>
