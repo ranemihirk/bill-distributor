@@ -112,10 +112,6 @@ export default function Users() {
     ]
   );
 
-  useEffect(() => {
-    console.log("addTax: ", addTax);
-  }, [addTax]);
-
   return (
     <div>
       <TableContainer component={Paper}>
