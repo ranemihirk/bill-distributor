@@ -13,8 +13,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle";
 import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons/faXmarkCircle";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons/faPenToSquare";
 import { useBillContext } from "./BillContext";
 import { TaxesProp } from "@/app/types";
+import { root } from "postcss";
 
 export default function Users() {
   const { taxes, setTaxes, randomIdGenerator } = useBillContext();
@@ -23,6 +25,7 @@ export default function Users() {
 
   const newTaxType = useRef<HTMLInputElement>(null);
   const newTaxPercentage = useRef<HTMLInputElement>(null);
+  const editTaxRef = useRef<number>(0);
   const [tax, setTax] = useState<number>(0);
   const taxRef = useRef(0);
 
@@ -32,21 +35,37 @@ export default function Users() {
         newTaxType.current.value != "" &&
         newTaxPercentage.current.value != ""
       ) {
-        setTaxes((prevItems) => {
+        setTaxes((prevTaxes) => {
           if (newTaxType.current && newTaxPercentage.current) {
-            const current: TaxesProp = {
-              id: randomIdGenerator(),
-              taxType: newTaxType.current.value,
-              taxPercentage: Number(newTaxPercentage.current.value),
-            };
-            return [...prevItems, current];
+            if (editTaxRef.current == 0) {
+              const current: TaxesProp = {
+                id: randomIdGenerator(),
+                taxType: newTaxType.current.value,
+                taxPercentage: Number(newTaxPercentage.current.value),
+              };
+              return [...prevTaxes, current];
+            } else {
+              const updatedPrevTaxes = prevTaxes.map((tax) => {
+                if (tax.id == editTaxRef.current) {
+                  tax.taxType = newTaxType.current
+                    ? newTaxType.current.value
+                    : tax.taxType;
+                  tax.taxPercentage = newTaxPercentage.current
+                    ? Number(newTaxPercentage.current.value)
+                    : tax.taxPercentage;
+                }
+                return tax;
+              });
+              return [...updatedPrevTaxes];
+            }
           } else {
-            return [...prevItems];
+            return [...prevTaxes];
           }
         });
         newTaxType.current.value = "";
         newTaxPercentage.current.value = "";
-        setAddTax(!addTax);
+        editTaxRef.current = 0;
+        setAddTax(false);
       }
     }
   }, [
@@ -56,6 +75,7 @@ export default function Users() {
     setAddTax,
     newTaxType.current,
     newTaxPercentage.current,
+    editTaxRef.current,
   ]);
 
   const deleteTax = useCallback(
@@ -68,6 +88,33 @@ export default function Users() {
     },
     [taxes, setTaxes]
   );
+
+  const editTax = useCallback(
+    (editItemId: number) => {
+      if (newTaxType.current && newTaxPercentage.current) {
+        if (taxes.length > 0) {
+          const currentTax = taxes.find((tax) => tax.id == editItemId);
+          if (currentTax != null) {
+            newTaxType.current.value = currentTax.taxType;
+            newTaxPercentage.current.value =
+              currentTax.taxPercentage.toString();
+            editTaxRef.current = editItemId;
+            setAddTax(true);
+          }
+        }
+      }
+    },
+    [
+      newTaxType.current,
+      newTaxPercentage.current,
+      setAddTax,
+      editTaxRef.current,
+    ]
+  );
+
+  useEffect(() => {
+    console.log("addTax: ", addTax);
+  }, [addTax]);
 
   return (
     <div>
@@ -114,6 +161,16 @@ export default function Users() {
                 <TableCell align="center">{item.taxPercentage}%</TableCell>
                 <TableCell align="center">
                   <IconButton
+                    aria-label="edit"
+                    onClick={() => editTax(item.id)}
+                    className="hover:bg-red/30"
+                  >
+                    <FontAwesomeIcon
+                      icon={faPenToSquare}
+                      className="text-inherit"
+                    />
+                  </IconButton>
+                  <IconButton
                     aria-label="delete"
                     onClick={() => deleteTax(item.id)}
                     className="hover:bg-red/30"
@@ -126,63 +183,60 @@ export default function Users() {
                 </TableCell>
               </TableRow>
             ))}
-            <TableRow classes={""}>
-              {addTax && (
-                <>
-                  <TableCell align="center" className="flex gap-2">
-                    <input
-                      id="tax-type"
-                      placeholder="Tax Type"
-                      ref={newTaxType}
-                      className="size-full border rounded-md p-2"
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <input
-                      id="tax-percentage"
-                      placeholder="Tax Percentage"
-                      ref={newTaxPercentage}
-                      className="size-full border rounded-md p-2"
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <div className="flex justify-evenly">
-                      <IconButton aria-label="accept" onClick={addNewTax}>
-                        <FontAwesomeIcon icon={faCheckCircle} />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => {
-                          if (newTaxType.current && newTaxPercentage.current) {
-                            newTaxType.current.value = "";
-                            newTaxPercentage.current.value = "";
-                          }
-                          setAddTax(false);
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          icon={faXmarkCircle}
-                          className="text-inherit"
-                        />
-                      </IconButton>
-                    </div>
-                  </TableCell>
-                </>
-              )}
-            </TableRow>
-            <TableRow classes={""}>
-              {!addTax && (
-                <TableCell align="center" colSpan={3}>
-                  <Button
-                    className="w-full border border-dashed text-3xl"
-                    variant="text"
-                    onClick={() => setAddTax(!addTax)}
+            <TableRow sx={{ display: addTax ? "table-row" : "none" }}>
+              <TableCell align="center" className="flex gap-2">
+                <input
+                  id="tax-type"
+                  placeholder="Tax Type"
+                  ref={newTaxType}
+                  className="size-full border rounded-md p-2"
+                />
+              </TableCell>
+              <TableCell align="center">
+                <input
+                  id="tax-percentage"
+                  placeholder="Tax Percentage"
+                  ref={newTaxPercentage}
+                  className="size-full border rounded-md p-2"
+                />
+              </TableCell>
+              <TableCell align="center">
+                <div className="flex justify-evenly">
+                  <IconButton aria-label="accept" onClick={addNewTax}>
+                    <FontAwesomeIcon icon={faCheckCircle} />
+                  </IconButton>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      if (newTaxType.current && newTaxPercentage.current) {
+                        newTaxType.current.value = "";
+                        newTaxPercentage.current.value = "";
+                      }
+                      setAddTax(false);
+                    }}
                   >
-                    +
-                  </Button>
-                </TableCell>
-              )}
+                    <FontAwesomeIcon
+                      icon={faXmarkCircle}
+                      className="text-inherit"
+                    />
+                  </IconButton>
+                </div>
+              </TableCell>
             </TableRow>
+            <TableRow sx={{ display: !addTax ? "table-row" : "none" }}>
+              <TableCell align="center" colSpan={3}>
+                <Button
+                  className="w-full border border-dashed text-3xl"
+                  variant="text"
+                  onClick={() => setAddTax(!addTax)}
+                >
+                  +
+                </Button>
+              </TableCell>
+            </TableRow>
+            {/* <TableRow classes={`${!addTax ? "" : "hidden"}`}>
+              
+            </TableRow> */}
           </TableBody>
         </Table>
       </TableContainer>
