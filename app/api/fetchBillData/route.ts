@@ -5,7 +5,15 @@ import path from "path";
 const filePath = path.join(process.cwd(), "data", "billsData.json");
 
 export async function GET(request: Request) {
-  const data = await fs.readFile(filePath, "utf8");
-  console.log('data: ', data);
-  return NextResponse.json({ success: true, data: data });
+  try {
+    const fileContents = await fs.readFile(filePath, "utf8");
+    const data = JSON.parse(fileContents);
+    return NextResponse.json( data );
+  } catch (error) {
+    console.error("Error reading file:", error);
+    return NextResponse.json({
+      success: false,
+      error: "Failed to fetch file data",
+    });
+  }
 }

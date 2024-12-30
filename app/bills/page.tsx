@@ -9,25 +9,18 @@ export async function generateMetadata() {
 
 export default async function BillsPage() {
   const data = await fetchAPI();
-  return <BillsListPage data={data} />;
+  return <BillsListPage data={data.bills} res={data.res} path={data.path} />;
 }
 
 const fetchAPI = async () => {
-  let data = {
-    type: "fetch-bills",
-  };
-  let a = await fetch("/api/fetchBillData", {
+  const apiCallPath = `${process.env.HOST_URL}/api/fetchBillData`;
+  let res = await fetch(apiCallPath, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
-  let res = await a.json();
-  console.log("res: ", typeof res.data, JSON.parse(res.data));
+  const result = await res.json();
 
-  // if (res.data) {
-  const result = JSON.parse(res.data);
-  // setBills(result.bills);
-  // }
-  return result.bills;
+  return { bills: result.bills };
 };

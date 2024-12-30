@@ -43,8 +43,6 @@ export default function BillsListPage({ data }: { data: MainBillProps[] }) {
     setBills,
   } = useBillContext();
 
-  setBills(data);
-
   // console.log("bills: ", bills);
 
   const getDate = (currentDate: Date) => {
@@ -68,8 +66,7 @@ export default function BillsListPage({ data }: { data: MainBillProps[] }) {
   };
 
   useEffect(() => {
-    // fetchAPI();
-    // setBills(billsData);
+    setBills(data);
   }, []);
 
   return (

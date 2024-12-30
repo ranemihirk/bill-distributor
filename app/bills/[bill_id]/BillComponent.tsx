@@ -29,7 +29,7 @@ import "./bill.css";
 const extraFee = 30;
 const billPaid = 662.5;
 
-export default function BillDataPage({ bill_id }) {
+export default function BillDataPage({ bill_id }: { bill_id: string }) {
   const {
     bills,
     currentBill,
