@@ -90,7 +90,6 @@ export default function BillContextProvider({
     return Math.floor(Math.random() * 1000000) + 1;
   }
   async function fetchAllBills() {
-    console.log('fetchAllBills');
     const apiCallPath = `/api/fetchBillData`;
     let res = await fetch(apiCallPath, {
       method: "GET",
@@ -102,7 +101,6 @@ export default function BillContextProvider({
     setBills(result.bills);
   }
   const fetchBillData = (bill_id: number) => {
-    console.log("fetchBillData: ", bill_id);
     setBillId(bill_id);
     if (bills && bills.length > 0) {
       if (bill_id != 0) {

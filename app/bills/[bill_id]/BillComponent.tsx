@@ -1,6 +1,6 @@
 "use client";
 import React, { lazy, useRef, useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 import Drawer from "@mui/material/Drawer";
 import Accordion from "@mui/material/Accordion";
@@ -30,8 +30,10 @@ import "./bill.css";
 const extraFee = 30;
 const billPaid = 662.5;
 
-export default function BillDataPage({ bill_id }: { bill_id: string }) {
+export default function BillDataPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const bill_id = pathname.split('/')[2];
 
   const {
     bills,
