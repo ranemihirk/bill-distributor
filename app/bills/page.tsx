@@ -1,11 +1,6 @@
-import { useEffect } from "react";
+import React from "react";
+export const dynamic = "force-dynamic";
 import BillsListPage from "./billsList";
-
-export async function generateMetadata() {
-  return {
-    title: "Bills",
-  };
-}
 
 export default async function BillsPage() {
   const data = await fetchAPI();

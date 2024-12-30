@@ -5,6 +5,6 @@
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/bills/[bill_id]/page": "app/bills/[bill_id]/page.js",
   "/bills/new/page": "app/bills/new/page.js",
-  "/bills/page": "app/bills/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/bills/page": "app/bills/page.js"
 }
