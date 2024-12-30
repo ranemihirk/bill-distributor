@@ -13,8 +13,10 @@ import React, {
 } from "react";
 import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "./types";
 import fetchLocalStorage from "./fetchLocalStorage";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 type BillContext = {
+  isLargeScreen: boolean;
   bills: MainBillProps[] | null;
   currentBill: MainBillProps | null;
   billId: number;
@@ -24,6 +26,7 @@ type BillContext = {
   users: UsersProp[];
   items: ItemsProps[];
   taxes: TaxesProp[];
+  fetchBillData: (id: number) => MainBillProps | null;
   setBills: Dispatch<SetStateAction<MainBillProps[] | null>>;
   setCurrentBill: Dispatch<SetStateAction<MainBillProps | null>>;
   setBillId: Dispatch<SetStateAction<number>>;
@@ -61,11 +64,13 @@ export const BillContext = createContext<BillContext | null>(null);
 export default function BillContextProvider({
   children,
 }: BillContextProviderProps) {
-  const [bills, setBills] = fetchLocalStorage<MainBillProps[] | null>(
-    "bills",
-    null
-  );
+  // const [bills, setBills] = fetchLocalStorage<MainBillProps[] | null>(
+  //   "bills",
+  //   null
+  // );
 
+  const [bills, setBills] = useState<MainBillProps[] | null>(null);
+  
   const [currentBill, setCurrentBill] = useState<MainBillProps | null>(null);
   const [billId, setBillId] = useState<number>(0);
   const [billTitle, setBillTitle] = useState<string>("");
@@ -78,14 +83,17 @@ export default function BillContextProvider({
   const subTotalRef = useRef(0);
   const taxRef = useRef(0);
 
+  const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+
   function randomIdGenerator() {
     return Math.floor(Math.random() * 1000000) + 1;
   }
 
-  const fetchBillData = () => {
+  const fetchBillData = (bill_id: number) => {
+    setBillId(bill_id);
     if (bills && bills.length > 0) {
-      if (billId != 0) {
-        const current = bills.filter((bill) => bill.id == billId)[0];
+      if (bill_id != 0) {
+        const current = bills.filter((bill) => bill.id == bill_id)[0];
         if (current) {
           setCurrentBill(current);
           setBillTitle(current.title);
@@ -94,9 +102,11 @@ export default function BillContextProvider({
           setUsers(current.users);
           setItems(current.items);
           setTaxes(current.taxes);
+          return current;
         }
       }
     }
+    return null;
   };
 
   const calculateSubTotal = useCallback(() => {
@@ -174,9 +184,9 @@ export default function BillContextProvider({
     }
   }, [bills, currentBill, billId, setBills, setCurrentBill]);
 
-  useEffect(() => {
-    fetchBillData();
-  }, [billId]);
+  // useEffect(() => {
+  //   fetchBillData();
+  // }, [billId]);
 
   useEffect(() => {
     saveToBills();
@@ -204,6 +214,7 @@ export default function BillContextProvider({
   return (
     <BillContext.Provider
       value={{
+        isLargeScreen,
         bills,
         currentBill,
         billId,
@@ -213,6 +224,7 @@ export default function BillContextProvider({
         users,
         items,
         taxes,
+        fetchBillData,
         setBills,
         setCurrentBill,
         setBillId,

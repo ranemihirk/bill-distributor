@@ -39,7 +39,7 @@ export default function BillInfoPage() {
   return (
     <>
       {items.length > 0 && (
-        <TableContainer component={Paper} className="lg:rounded-3xl">
+        <TableContainer component={Paper} className="lg:rounded">
           <Table
             aria-label="simple table"
             className="shadow-inner border text-light bg-dark border-light"
@@ -134,7 +134,7 @@ export default function BillInfoPage() {
               )}
               {taxes.length > 0 &&
                 taxes.map((current) => (
-                  <TableRow classes={""}>
+                  <TableRow classes={""} key={`taxes_${current.id}`}>
                     <TableCell
                       align="center"
                       colSpan={2}
