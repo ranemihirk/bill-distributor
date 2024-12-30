@@ -151,7 +151,6 @@ export default function BillDataPage() {
                   htmlInput: {
                     className:
                       "text-light bill-title bg-dark autofill:bg-dark border-light rounded-lg outline-none active:outline-none focus:outline-none",
-                    defaultValue: billTitle,
                   },
                   inputLabel: {
                     className:
