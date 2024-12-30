@@ -26,6 +26,7 @@ type BillContext = {
   users: UsersProp[];
   items: ItemsProps[];
   taxes: TaxesProp[];
+  fetchAllBills: () => void;
   fetchBillData: (id: number) => MainBillProps | null;
   setBills: Dispatch<SetStateAction<MainBillProps[] | null>>;
   setCurrentBill: Dispatch<SetStateAction<MainBillProps | null>>;
@@ -70,7 +71,7 @@ export default function BillContextProvider({
   // );
 
   const [bills, setBills] = useState<MainBillProps[] | null>(null);
-  
+
   const [currentBill, setCurrentBill] = useState<MainBillProps | null>(null);
   const [billId, setBillId] = useState<number>(0);
   const [billTitle, setBillTitle] = useState<string>("");
@@ -88,8 +89,20 @@ export default function BillContextProvider({
   function randomIdGenerator() {
     return Math.floor(Math.random() * 1000000) + 1;
   }
-
+  async function fetchAllBills() {
+    console.log('fetchAllBills');
+    const apiCallPath = `/api/fetchBillData`;
+    let res = await fetch(apiCallPath, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await res.json();
+    setBills(result.bills);
+  }
   const fetchBillData = (bill_id: number) => {
+    console.log("fetchBillData: ", bill_id);
     setBillId(bill_id);
     if (bills && bills.length > 0) {
       if (bill_id != 0) {
@@ -211,6 +224,10 @@ export default function BillContextProvider({
     }
   }, [currentBill]);
 
+  useEffect(() => {
+    
+  }, []);
+
   return (
     <BillContext.Provider
       value={{
@@ -224,6 +241,7 @@ export default function BillContextProvider({
         users,
         items,
         taxes,
+        fetchAllBills,
         fetchBillData,
         setBills,
         setCurrentBill,

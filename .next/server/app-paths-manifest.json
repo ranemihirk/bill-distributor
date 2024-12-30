@@ -1,3 +1,6 @@
 {
-  "/bills/page": "app/bills/page.js"
+  "/api/fetchBillData/route": "app/api/fetchBillData/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/bills/page": "app/bills/page.js",
+  "/bills/[bill_id]/page": "app/bills/[bill_id]/page.js"
 }

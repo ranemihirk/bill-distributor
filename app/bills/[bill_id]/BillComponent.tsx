@@ -1,5 +1,6 @@
 "use client";
-import React, { lazy, useRef, useEffect, useState } from "react";
+import React, { lazy, useRef, useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 import Drawer from "@mui/material/Drawer";
 import Accordion from "@mui/material/Accordion";
@@ -30,6 +31,8 @@ const extraFee = 30;
 const billPaid = 662.5;
 
 export default function BillDataPage({ bill_id }: { bill_id: string }) {
+  const router = useRouter();
+
   const {
     bills,
     currentBill,
@@ -112,13 +115,10 @@ export default function BillDataPage({ bill_id }: { bill_id: string }) {
     // params.then((response) => {
     // setBillId(Number(params.bill_id));
     // });
-
+    if (bills == null) return router.push("/bills");
+    
     fetchBillData(Number(bill_id));
   }, []);
-
-  useEffect(() => {
-    console.log("params.bill_id: ", bill_id);
-  }, [bill_id]);
 
   return (
     <div className="bg-dark rounded-xl py-4 lg:p-8 h-full overflow-hidden overflow-y-auto scroll-smooth">

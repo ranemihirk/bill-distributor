@@ -9,7 +9,7 @@ export async function generateMetadata() {
 
 export default async function BillsPage() {
   const data = await fetchAPI();
-  return <BillsListPage data={data.bills} res={data.res} path={data.path} />;
+  return <BillsListPage data={data.bills} />;
 }
 
 const fetchAPI = async () => {
