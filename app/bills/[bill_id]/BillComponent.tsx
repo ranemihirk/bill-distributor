@@ -33,7 +33,7 @@ const billPaid = 662.5;
 export default function BillDataPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const bill_id = pathname.split('/')[2];
+  const bill_id = pathname.split("/")[2];
 
   const {
     bills,
@@ -114,12 +114,18 @@ export default function BillDataPage() {
     // Set the maximum date to today's date
     const today = new Date();
     const formattedToday = today.toISOString().split("T")[0];
-    // params.then((response) => {
-    // setBillId(Number(params.bill_id));
-    // });
-    if (bills == null) return router.push("/bills");
     
-    fetchBillData(Number(bill_id));
+    if (bills == null) return router.push("/bills");
+
+    const billData = fetchBillData(Number(bill_id));
+    if (billData != null) {
+      const currentDate = new Date(billData.dated);
+      if (billTitleRef.current && billPaidRef.current && billDateRef.current) {
+        billTitleRef.current.value = billData.title;
+        billPaidRef.current.value = billData.billAmountPaid.toString();
+        billDateRef.current.value = currentDate.toISOString().split("T")[0];
+      }
+    }
   }, []);
 
   return (
@@ -144,7 +150,6 @@ export default function BillDataPage() {
                 label="Bill Name"
                 variant="outlined"
                 inputRef={billTitleRef}
-                value={billTitle}
                 onChange={onBillTitleChange}
                 className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
                 slotProps={{
@@ -170,7 +175,6 @@ export default function BillDataPage() {
                 label="Bill Amount Paid"
                 variant="outlined"
                 inputRef={billPaidRef}
-                value={billAmountPaid == 0 ? "" : billAmountPaid}
                 onChange={onBillPaidChange}
                 className="text-4xl bill-title rounded-lg border border-light autofill:bg-dark"
                 slotProps={{
@@ -199,7 +203,6 @@ export default function BillDataPage() {
                 ref={billDateRef}
                 max={formattedToday}
                 onChange={onBillDateChange}
-                value={billDate.toString()}
               ></input>
             </div>
             <div className="rounded-3xl flex justify-center gap-2 shadow-inner shadow-dark/50 w-full">

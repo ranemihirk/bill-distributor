@@ -116,6 +116,9 @@ export default function BillContextProvider({
           return current;
         }
       }
+      else{
+        resetBillData();
+      }
     }
     return null;
   };
@@ -195,9 +198,27 @@ export default function BillContextProvider({
     }
   }, [bills, currentBill, billId, setBills, setCurrentBill]);
 
-  // useEffect(() => {
-  //   fetchBillData();
-  // }, [billId]);
+  const resetBillData = useCallback(() => {
+    setCurrentBill(null);
+    setBillTitle("");
+    setBillAmountPaid(0);
+    setBillDatePaid(new Date());
+    setUsers([]);
+    setItems([]);
+    setTaxes([]);
+  }, [
+    setCurrentBill,
+    setBillTitle,
+    setBillAmountPaid,
+    setBillDatePaid,
+    setUsers,
+    setItems,
+    setTaxes,
+  ]);
+
+  useEffect(() => {
+    console.log('bills: ', bills);
+  }, [bills]);
 
   useEffect(() => {
     saveToBills();
@@ -221,10 +242,6 @@ export default function BillContextProvider({
       });
     }
   }, [currentBill]);
-
-  useEffect(() => {
-    
-  }, []);
 
   return (
     <BillContext.Provider
