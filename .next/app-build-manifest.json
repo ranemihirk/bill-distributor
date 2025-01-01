@@ -21,6 +21,11 @@
       "static/chunks/main-app.js",
       "static/css/app/bills/[bill_id]/page.css",
       "static/chunks/app/bills/[bill_id]/page.js"
+    ],
+    "/api/updateBillData/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/updateBillData/route.js"
     ]
   }
 }

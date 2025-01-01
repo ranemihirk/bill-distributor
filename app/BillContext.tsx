@@ -100,6 +100,19 @@ export default function BillContextProvider({
     const result = await res.json();
     setBills(result.bills);
   }
+
+  const callUpdateBillDataAPI = async (current: MainBillProps) => {
+    const apiCallPath = `/api/updateBillData`;
+    let res = await fetch(apiCallPath, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(current),
+    });
+    const result = await res.json();
+  };
+
   const fetchBillData = (bill_id: number) => {
     setBillId(bill_id);
     if (bills && bills.length > 0) {
@@ -115,8 +128,7 @@ export default function BillContextProvider({
           setTaxes(current.taxes);
           return current;
         }
-      }
-      else{
+      } else {
         resetBillData();
       }
     }
@@ -182,6 +194,7 @@ export default function BillContextProvider({
       setCurrentBill((prevCurrentBill) => {
         const current: MainBillProps | null = prevCurrentBill;
         if (current) {
+          callUpdateBillDataAPI(current);
           current.billAmountPaid = billAmountPaid;
           current.users = users;
           current.items = items;
@@ -196,7 +209,18 @@ export default function BillContextProvider({
         return prevCurrentBill;
       });
     }
-  }, [bills, currentBill, billId, setBills, setCurrentBill]);
+  }, [
+    bills,
+    currentBill,
+    billId,
+    users,
+    items,
+    taxes,
+    billAmountPaid,
+    setBills,
+    setCurrentBill,
+    callUpdateBillDataAPI,
+  ]);
 
   const resetBillData = useCallback(() => {
     setCurrentBill(null);
@@ -217,7 +241,7 @@ export default function BillContextProvider({
   ]);
 
   useEffect(() => {
-    console.log('bills: ', bills);
+    console.log("bills: ", bills);
   }, [bills]);
 
   useEffect(() => {
@@ -225,22 +249,28 @@ export default function BillContextProvider({
   }, [users, items, taxes]);
 
   useEffect(() => {
-    if (currentBill) {
-      setBills((prevBills) => {
-        if (prevBills && prevBills.length > 0) {
-          let exists = prevBills.some((bill) => bill.id === billId);
-          if (exists) {
-            return prevBills.map((bill) =>
-              bill.id == billId ? currentBill : bill
-            );
+    const setBillAndStore = async () => {
+      if (currentBill) {
+        await callUpdateBillDataAPI(currentBill);
+
+        setBills((prevBills) => {
+          if (prevBills && prevBills.length > 0) {
+            let exists = prevBills.some((bill) => bill.id === billId);
+            if (exists) {
+              return prevBills.map((bill) =>
+                bill.id == billId ? currentBill : bill
+              );
+            } else {
+              return [...prevBills, currentBill];
+            }
           } else {
-            return [...prevBills, currentBill];
+            return [currentBill];
           }
-        } else {
-          return [currentBill];
-        }
-      });
-    }
+        });
+      }
+    };
+
+    setBillAndStore();
   }, [currentBill]);
 
   return (
