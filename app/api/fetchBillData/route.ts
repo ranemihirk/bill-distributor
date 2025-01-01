@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   try {
     const fileContents = await fs.readFile(filePath, "utf8");
     const data = JSON.parse(fileContents);
-    return NextResponse.json( data );
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Error reading file:", error);
     return NextResponse.json({

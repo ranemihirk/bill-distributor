@@ -1,4 +1,10 @@
 {
-  "/bills/page": "app/bills/page.js",
-  "/bills/[bill_id]/page": "app/bills/[bill_id]/page.js"
+  "/api/fetchBillData/route": "app/api/fetchBillData/route.js",
+  "/api/updateBillData/route": "app/api/updateBillData/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/bills/[bill_id]/page": "app/bills/[bill_id]/page.js",
+  "/bills/new/page": "app/bills/new/page.js",
+  "/page": "app/page.js",
+  "/bills/page": "app/bills/page.js"
 }

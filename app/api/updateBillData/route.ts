@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { MainBillProps } from "@/app/types";
 
 const filePath = path.join(process.cwd(), "data", "billsData.json");
 
@@ -18,18 +19,19 @@ export async function POST(request: Request) {
     console.log("body: ", body);
     if (body != null && data.bills) {
       // Using `some` (returns true/false)
-      const exists = data.bills.some((bill) => bill.id === body.id);
+      const exists = data.bills.some(
+        (bill: MainBillProps) => bill.id === body.id
+      );
       console.log(exists); // true
       let updateBillData;
       try {
         if (exists) {
-          updateBillData = data.bills.map((bill) =>
+          updateBillData = data.bills.map((bill: MainBillProps) =>
             bill.id === body.id ? body : bill
           );
         } else {
           updateBillData = data.bills.push(body);
         }
-        console.log("updateBillData: ", updateBillData);
         const newData = {
           bills: updateBillData,
         };
