@@ -15,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons/faEye";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
+import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
 import { dividerClasses } from "@mui/material";
 import { MainBillProps } from "../types";
 
@@ -77,6 +78,15 @@ export default function BillsListPage({
 
   return (
     <>
+    <div className="mb-4">
+        <Link href="/">
+          <FontAwesomeIcon
+            icon={faArrowAltCircleLeft}
+            className="text-dark"
+            size="2xl"
+          />
+        </Link>
+      </div>
       <div className="flex justify-between mb-16">
         <h1 className="text-3xl font-bold">Bills</h1>{" "}
         <Link

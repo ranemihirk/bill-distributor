@@ -24,12 +24,20 @@ export default function Home() {
             Bill Distributor
           </h1>
         </Link>
-        <Link
-          href="/bills"
-          className="border text-sm lg:text-lg border-light px-4 py-2 rounded-lg bg-dark/80 text-light hover:bg-light hover:text-dark hover:shadow hover:shadow-light transition-all font-bold"
-        >
-          Bill History
-        </Link>
+        <div className="flex justify-end gap-2 flex-wrap">
+          <Link
+            href="/bills/new"
+            className="border text-sm lg:text-lg border-light px-4 py-2 rounded-lg bg-dark/80 text-light hover:bg-light hover:text-dark hover:shadow hover:shadow-light transition-all font-bold"
+          >
+            Old Bill
+          </Link>
+          <Link
+            href="/bills"
+            className="border text-sm lg:text-lg border-light px-4 py-2 rounded-lg bg-dark/80 text-light hover:bg-light hover:text-dark hover:shadow hover:shadow-light transition-all font-bold"
+          >
+            Bill History
+          </Link>
+        </div>
       </div>
     </main>
   );

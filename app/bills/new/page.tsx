@@ -6,8 +6,15 @@ import React, {
   useState,
   SyntheticEvent,
 } from "react";
+
+import Link from "next/link";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
+
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+
 import { useBillContext } from "@/app/BillContext";
 import BillToUserInfo from "./BillToUserInfo";
 import {
@@ -93,7 +100,17 @@ export default function BillPage() {
   }, []);
 
   return (
-    <>
+    <div className="py-4 lg:py-8">
+      <div className="mb-4">
+        <Link href="/bills">
+          <FontAwesomeIcon
+            icon={faArrowAltCircleLeft}
+            className="text-dark"
+            size="2xl"
+          />
+        </Link>
+      </div>
+
       <ToggleButtonGroup
         value={alignment}
         exclusive
@@ -216,6 +233,6 @@ export default function BillPage() {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }
