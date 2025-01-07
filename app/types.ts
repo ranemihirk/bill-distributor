@@ -40,7 +40,7 @@ export type TaxesProp = {
 };
 
 export type ExtraFeeProp = {
-  id: number;
-  feeType: string;
+  // id: number;
+  // feeType: string;
   feeAmount: number;
 };

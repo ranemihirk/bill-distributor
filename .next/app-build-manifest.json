@@ -16,6 +16,11 @@
       "static/chunks/main-app.js",
       "static/css/app/bills/[bill_id]/page.css",
       "static/chunks/app/bills/[bill_id]/page.js"
+    ],
+    "/bills/new/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/bills/new/page.js"
     ]
   }
 }

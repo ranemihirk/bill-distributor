@@ -1,213 +1,269 @@
-export type UsersProp = {
-  id: number;
-  name: string;
-};
-export type ItemsProp = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-};
-export type ItemsQuantityProp = {
-  itemId: number;
-  quantity: number;
-};
-export type UserItemProp = {
-  userId: number;
-  items: ItemsQuantityProp[];
-};
-export type TaxProp = {
-  taxType: string;
-  taxPercentage: number;
-};
-export interface ItemsToUserProp {
-  users: UsersProp[];
-  items: ItemsProp[];
-  current: UserItemProp;
-}
+import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "@/app/types";
 
-// Bill No. 1
-
-// export const defaultUsers: UsersProp[] = [
-//   {
-//     id: 1,
-//     name: "Mihir",
-//   },
-//   {
-//     id: 2,
-//     name: "Amit",
-//   },
-//   {
-//     id: 3,
-//     name: "Shivani",
-//   },
-// ];
-// export const defaultItems: ItemsProp[] = [
-//   {
-//     id: 1,
-//     name: "Americano Small",
-//     price: 170,
-//     quantity: 5,
-//   },
-//   {
-//     id: 2,
-//     name: "Frappe Small",
-//     price: 305,
-//     quantity: 1,
-//   },
-//   {
-//     id: 3,
-//     name: "Add On hazelnut Flavour",
-//     price: 50,
-//     quantity: 1,
-//   },
-// ];
-// export const defaultUserItems: UserItemProp[] = [
-//   {
-//     userId: 1,
-//     items: [
-//       { itemId: 1, quantity: 2 },
-//       { itemId: 2, quantity: 1 },
-//       { itemId: 3, quantity: 1 },
-//     ],
-//   },
-//   {
-//     userId: 2,
-//     items: [{ itemId: 1, quantity: 3 }],
-//   },
-// ];
-
-// export const extraFee = 30;
-// export const billPaid = 662.5;
-
-// Bill No. 2
-
-// export const defaultUsers: UsersProp[] = [
-//   {
-//     id: 1,
-//     name: "Mihir",
-//   },
-//   {
-//     id: 2,
-//     name: "Amit",
-//   },
-//   {
-//     id: 3,
-//     name: "Rhea",
-//   },
-// ];
-// export const defaultItems: ItemsProp[] = [
-//   {
-//     id: 1,
-//     name: "Americano Small",
-//     price: 170,
-//     quantity: 3,
-//   },
-//   {
-//     id: 2,
-//     name: "Frappe Small",
-//     price: 305,
-//     quantity: 4,
-//   },
-//   {
-//     id: 3,
-//     name: "Add On Vanilla Flavour",
-//     price: 50,
-//     quantity: 4,
-//   },
-//   {
-//     id: 4,
-//     name: "Frappe Small",
-//     price: 305,
-//     quantity: 1,
-//   },
-//   {
-//     id: 5,
-//     name: "Mocha Regular",
-//     price: 285,
-//     quantity: 2,
-//   },
-// ];
-// export const defaultUserItems: UserItemProp[] = [
-//   {
-//     userId: 1,
-//     items: [
-//       { itemId: 1, quantity: 1 },
-//       { itemId: 2, quantity: 3 },
-//       { itemId: 3, quantity: 3 },
-//     ],
-//   },
-//   {
-//     userId: 2,
-//     items: [{ itemId: 1, quantity: 2 },{ itemId: 4, quantity: 1 }],
-//   },
-//   {
-//     userId: 3,
-//     items: [{ itemId: 5, quantity: 2 },{ itemId: 2, quantity: 1 }, { itemId: 3, quantity: 1 }],
-//   },
-// ];
-
-// export const extraFee = 50;
-// export const billPaid = 2108.7;
-
-// Bill No. 3
-
-export const defaultUsers: UsersProp[] = [
+export const bills: MainBillProps[] = [
   {
     id: 1,
-    name: "Mihir",
+    title: "Barista",
+    billTotal: 1265,
+    dated: new Date("11/17/2024"),
+    billAmountPaid: 662.5,
+    items: [
+      {
+        id: 1,
+        name: "Americano Small",
+        rate: 170,
+        quantity: 5,
+      },
+      {
+        id: 2,
+        name: "Frappe Small",
+        rate: 305,
+        quantity: 1,
+      },
+      {
+        id: 3,
+        name: "Add On hazelnut Flavour",
+        rate: 50,
+        quantity: 1,
+      },
+    ],
+    taxes: [
+      {
+        id: 1,
+        taxType: "CGST",
+        taxPercentage: 2.5,
+      },
+      {
+        id: 2,
+        taxType: "SGST",
+        taxPercentage: 2.5,
+      },
+    ],
+    users: [
+      {
+        id: 1,
+        name: "Mihir",
+      },
+      {
+        id: 2,
+        name: "Amit",
+      },
+    ],
+    userToItems: [
+      {
+        userId: 1,
+        items: [
+          { itemId: 1, quantity: 2 },
+          { itemId: 2, quantity: 1 },
+          { itemId: 3, quantity: 1 },
+        ],
+      },
+      {
+        userId: 2,
+        items: [{ itemId: 1, quantity: 3 }],
+      },
+    ],
+    extraFee: [{ feeAmount: 30 }],
   },
   {
     id: 2,
-    name: "Amit",
+    title: "Barista",
+    billTotal: 2941,
+    dated: new Date("11/28/2024"),
+    billAmountPaid: 2108.7,
+    items: [
+      {
+        id: 1,
+        name: "Americano Small",
+        rate: 170,
+        quantity: 3,
+      },
+      {
+        id: 2,
+        name: "Frappe Small",
+        rate: 305,
+        quantity: 4,
+      },
+      {
+        id: 3,
+        name: "Add On Vanilla Flavour",
+        rate: 50,
+        quantity: 4,
+      },
+      {
+        id: 4,
+        name: "Frappe Small",
+        rate: 305,
+        quantity: 1,
+      },
+      {
+        id: 5,
+        name: "Mocha Regular",
+        rate: 285,
+        quantity: 2,
+      },
+    ],
+    taxes: [
+      {
+        id: 1,
+        taxType: "CGST",
+        taxPercentage: 2.5,
+      },
+      {
+        id: 2,
+        taxType: "SGST",
+        taxPercentage: 2.5,
+      },
+    ],
+    users: [
+      {
+        id: 1,
+        name: "Mihir",
+      },
+      {
+        id: 2,
+        name: "Amit",
+      },
+      {
+        id: 3,
+        name: "Rhea",
+      },
+    ],
+    userToItems: [
+      {
+        userId: 1,
+        items: [
+          { itemId: 1, quantity: 1 },
+          { itemId: 2, quantity: 3 },
+          { itemId: 3, quantity: 3 },
+        ],
+      },
+      {
+        userId: 2,
+        items: [
+          { itemId: 1, quantity: 2 },
+          { itemId: 4, quantity: 1 },
+        ],
+      },
+      {
+        userId: 3,
+        items: [
+          { itemId: 5, quantity: 2 },
+          { itemId: 2, quantity: 1 },
+          { itemId: 3, quantity: 1 },
+        ],
+      },
+    ],
+    extraFee: [{ feeAmount: 50 }],
   },
   {
     id: 3,
-    name: "Yash",
-  },
-];
-export const defaultItems: ItemsProp[] = [
-  {
-    id: 1,
-    name: "Americano Small",
-    price: 170,
-    quantity: 3,
-  },
-  {
-    id: 2,
-    name: "Frappe Small",
-    price: 305,
-    quantity: 1,
-  },
-];
-export const defaultUserItems: UserItemProp[] = [
-  {
-    userId: 1,
+    title: "Barista",
+    billTotal: 856,
+    dated: new Date("12/23/2024"),
+    billAmountPaid: 523.6,
     items: [
-      { itemId: 1, quantity: 1 },
+      {
+        id: 1,
+        name: "Americano Small",
+        rate: 170,
+        quantity: 3,
+      },
+      {
+        id: 2,
+        name: "Frappe Small",
+        rate: 305,
+        quantity: 1,
+      },
     ],
+    taxes: [
+      {
+        id: 1,
+        taxType: "CGST",
+        taxPercentage: 2.5,
+      },
+      {
+        id: 2,
+        taxType: "SGST",
+        taxPercentage: 2.5,
+      },
+    ],
+    users: [
+      {
+        id: 1,
+        name: "Mihir",
+      },
+      {
+        id: 2,
+        name: "Amit",
+      },
+      {
+        id: 3,
+        name: "Yash",
+      },
+    ],
+    userToItems: [
+      {
+        userId: 1,
+        items: [{ itemId: 1, quantity: 1 }],
+      },
+      {
+        userId: 2,
+        items: [{ itemId: 1, quantity: 2 }],
+      },
+      {
+        userId: 3,
+        items: [{ itemId: 2, quantity: 1 }],
+      },
+    ],
+    extraFee: [{ feeAmount: 10 }],
   },
   {
-    userId: 2,
-    items: [{ itemId: 1, quantity: 2 }],
-  },
-  {
-    userId: 3,
-    items: [{ itemId: 2, quantity: 1 }],
+    id: 4,
+    title: "Barista",
+    billTotal: 893,
+    dated: new Date("01/03/2025"),
+    billAmountPaid: 635.1,
+    items: [
+      {
+        id: 1,
+        name: "Americano Small",
+        rate: 170,
+        quantity: 5,
+      },
+    ],
+    taxes: [
+      {
+        id: 1,
+        taxType: "CGST",
+        taxPercentage: 2.5,
+      },
+      {
+        id: 2,
+        taxType: "SGST",
+        taxPercentage: 2.5,
+      },
+    ],
+    users: [
+      {
+        id: 1,
+        name: "Mihir",
+      },
+      {
+        id: 2,
+        name: "Amit",
+      },
+    ],
+    userToItems: [
+      {
+        userId: 1,
+        items: [{ itemId: 1, quantity: 3 }],
+      },
+      {
+        userId: 2,
+        items: [{ itemId: 1, quantity: 2 }],
+      },
+    ],
+    extraFee: [{ feeAmount: 10 }],
   },
 ];
-
-export const extraFee = 10;
-export const billPaid = 523.6;
-
-export const defaultTaxes: TaxProp[] = [
-  {
-    taxType: "CGST",
-    taxPercentage: 2.5,
-  },
-  {
-    taxType: "SGST",
-    taxPercentage: 2.5,
-  },
-];
-

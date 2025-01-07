@@ -1,36 +1,10 @@
 import React, { lazy, useRef, useEffect, useState } from "react";
-
-type UsersProp = {
-  id: number;
-  name: string;
-};
-
-type ItemsProp = {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-};
-
-type ItemsQuantityProp = {
-  itemId: number;
-  quantity: number;
-};
-
-type UserItemProp = {
-  userId: number;
-  items: ItemsQuantityProp[];
-};
-
-type TaxProp = {
-  taxType: string;
-  taxPercentage: number;
-};
+import { UsersProp, ItemsProps, UserToItemsProp } from "@/app/types";
 
 type BillToUserInfoProp = {
   users: UsersProp[] | null;
-  items: ItemsProp[] | null;
-  itemsToUser: UserItemProp[] | null;
+  items: ItemsProps[] | null;
+  itemsToUser: UserToItemsProp[] | null;
   extraFee: number;
   billPaid: number;
   billTotal: number;
@@ -72,7 +46,6 @@ export default function BillToUserInfo({
 
   const getCurrentUserTotal = (currentItems: CurrentItemsToUsers[]) => {
     let billTotal: number = 0;
-
     currentItems.map((item) => {
       billTotal = billTotal + item.itemPrice * item.itemQuantity;
     });
@@ -91,7 +64,7 @@ export default function BillToUserInfo({
             if (newTest && newTest != null) {
               const newResult: CurrentItemsToUsers = {
                 itemName: newTest.name,
-                itemPrice: newTest.price,
+                itemPrice: newTest.rate,
                 itemQuantity: current.quantity,
               };
               currentUserToItems.push(newResult);
@@ -127,12 +100,12 @@ export default function BillToUserInfo({
         users &&
         items &&
         currentItemsToUser.length > 0 &&
-        currentItemsToUser.map((current) => (
+        currentItemsToUser.map((current, key) => (
           <>
-            <tr>
+            <tr key={`itemToUser_${key}`}>
               <td className="border">{current.user?.name}</td>
               <td className="border">
-                <table className="w-full">
+                <table className="w-full" key={`itemToUserTable_${key}`}>
                   <tr>
                     <th className="border">Item</th>
                     <th className="border">Rate</th>
