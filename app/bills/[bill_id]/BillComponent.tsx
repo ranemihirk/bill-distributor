@@ -115,7 +115,7 @@ export default function BillDataPage() {
     const today = new Date();
     const formattedToday = today.toISOString().split("T")[0];
     
-    if (bills == null) return router.push("/bills");
+    // if (bills == null) return router.push("/bills");
 
     const billData = fetchBillData(Number(bill_id));
     if (billData != null) {

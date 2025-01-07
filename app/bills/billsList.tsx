@@ -28,7 +28,11 @@ import { MainBillProps } from "../types";
 //   createData(3, "Barista", 2000, new Date()),
 // ];
 
-export default function BillsListPage({ data }: { data: MainBillProps[] }) {
+export default function BillsListPage({
+  data,
+}: {
+  data: MainBillProps[] | null;
+}) {
   const {
     isLargeScreen,
     bills,
@@ -66,7 +70,9 @@ export default function BillsListPage({ data }: { data: MainBillProps[] }) {
   };
 
   useEffect(() => {
-    setBills(data);
+    if (data != null) {
+      setBills(data);
+    }
   }, []);
 
   return (

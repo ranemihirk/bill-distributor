@@ -65,12 +65,12 @@ export const BillContext = createContext<BillContext | null>(null);
 export default function BillContextProvider({
   children,
 }: BillContextProviderProps) {
-  // const [bills, setBills] = fetchLocalStorage<MainBillProps[] | null>(
-  //   "bills",
-  //   null
-  // );
+  const [bills, setBills] = fetchLocalStorage<MainBillProps[] | null>(
+    "bills",
+    null
+  ); // ToDo: Comment when Redis is implemented.
 
-  const [bills, setBills] = useState<MainBillProps[] | null>(null);
+  // const [bills, setBills] = useState<MainBillProps[] | null>(null); // ToDo: Uncomment when Redis is implemented.
 
   const [currentBill, setCurrentBill] = useState<MainBillProps | null>(null);
   const [billId, setBillId] = useState<number>(0);
@@ -81,6 +81,7 @@ export default function BillContextProvider({
   const [items, setItems] = useState<ItemsProps[]>([]);
   const [taxes, setTaxes] = useState<TaxesProp[]>([]);
 
+  const billTotalRef = useRef(0);
   const subTotalRef = useRef(0);
   const taxRef = useRef(0);
 
@@ -194,11 +195,14 @@ export default function BillContextProvider({
       setCurrentBill((prevCurrentBill) => {
         const current: MainBillProps | null = prevCurrentBill;
         if (current) {
-          callUpdateBillDataAPI(current);
+          // callUpdateBillDataAPI(current);
+
+          billTotalRef.current = subTotalRef.current + (subTotalRef.current * taxRef.current) / 100;
           current.billAmountPaid = billAmountPaid;
           current.users = users;
           current.items = items;
           current.taxes = taxes;
+          current.billTotal = billTotalRef.current;
           setBills(
             (prevBills) =>
               prevBills &&
@@ -251,7 +255,7 @@ export default function BillContextProvider({
   useEffect(() => {
     const setBillAndStore = async () => {
       if (currentBill) {
-        await callUpdateBillDataAPI(currentBill);
+        // await callUpdateBillDataAPI(currentBill);
 
         setBills((prevBills) => {
           if (prevBills && prevBills.length > 0) {
