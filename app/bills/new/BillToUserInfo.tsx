@@ -90,7 +90,7 @@ export default function BillToUserInfo({
 
   return (
     <table className="table-auto w-full text-center">
-      <tr className="text-3xl">
+      <tr className="lg:text-3xl">
         <th className="border">User</th>
         <th className="border">Order</th>
       </tr>
