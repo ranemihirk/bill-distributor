@@ -102,7 +102,7 @@ export default function BillPage() {
   return (
     <div className="py-4 lg:py-8">
       <div className="mb-4">
-        <Link href="/bills">
+        <Link href="/">
           <FontAwesomeIcon
             icon={faArrowAltCircleLeft}
             className="text-dark"
