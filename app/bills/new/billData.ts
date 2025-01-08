@@ -266,4 +266,61 @@ export const bills: MainBillProps[] = [
     ],
     extraFee: [{ feeAmount: 10 }],
   },
+  {
+    id: 5,
+    title: "Barista",
+    billTotal: 1034,
+    dated: new Date("01/08/2024"),
+    billAmountPaid: 837.2,
+    items: [
+      {
+        id: 1,
+        name: "Americano Small",
+        rate: 170,
+        quantity: 4,
+      },
+      {
+        id: 2,
+        name: "Frappe Small",
+        rate: 305,
+        quantity: 1,
+      },
+    ],
+    taxes: [
+      {
+        id: 1,
+        taxType: "CGST",
+        taxPercentage: 2.5,
+      },
+      {
+        id: 2,
+        taxType: "SGST",
+        taxPercentage: 2.5,
+      },
+    ],
+    users: [
+      {
+        id: 1,
+        name: "Mihir",
+      },
+      {
+        id: 2,
+        name: "Amit",
+      },
+    ],
+    userToItems: [
+      {
+        userId: 1,
+        items: [
+          { itemId: 1, quantity: 2 },
+          { itemId: 2, quantity: 1 },
+        ],
+      },
+      {
+        userId: 2,
+        items: [{ itemId: 1, quantity: 2 }],
+      },
+    ],
+    extraFee: [{ feeAmount: 10 }],
+  },
 ];
