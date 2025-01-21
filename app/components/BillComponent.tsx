@@ -18,14 +18,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
 import { faCaretSquareDown } from "@fortawesome/free-regular-svg-icons/faCaretSquareDown";
 
-import BillToUserInfo from "./BillToUserInfo";
-import { useBillContext } from "@/app/BillContext";
-import NewBillPage from "./../new/page";
-import Users from "@/app/Users";
-import Items from "@/app/Items";
-import Taxes from "@/app/Taxes";
-import BillInfoPage from "./BillInfo";
-import "./bill.css";
+import BillToUserInfo from "@/components/BillToUserInfo";
+import { useBillContext } from "@/contexts/BillContext";
+import NewBillPage from "../bills/new/page";
+import Users from "@/components/Users";
+import Items from "@/components/Items";
+import Taxes from "@/components/Taxes";
+import BillInfoPage from "@/components/BillInfo";
+import "@/assets/styles/bill.css";
 
 const extraFee = 30;
 const billPaid = 662.5;

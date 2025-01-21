@@ -1,4 +1,4 @@
-import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "@/app/types";
+import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "@/libs/types";
 
 export const bills: MainBillProps[] = [
   {
@@ -319,6 +319,78 @@ export const bills: MainBillProps[] = [
       {
         userId: 2,
         items: [{ itemId: 1, quantity: 2 }],
+      },
+    ],
+    extraFee: [{ feeAmount: 10 }],
+  },
+  {
+    id: 5,
+    title: "Barista",
+    billTotal: 1076,
+    dated: new Date("01/19/2024"),
+    billAmountPaid: 817,
+    items: [
+      {
+        id: 1,
+        name: "Americano Small",
+        rate: 170,
+        quantity: 2,
+      },
+      {
+        id: 2,
+        name: "Frappe Small",
+        rate: 305,
+        quantity: 1,
+      },
+      {
+        id: 3,
+        name: "Frappe Reg",
+        rate: 330,
+        quantity: 1,
+      },
+      {
+        id: 4,
+        name: "Add on Caramel",
+        rate: 50,
+        quantity: 1,
+      },
+    ],
+    taxes: [
+      {
+        id: 1,
+        taxType: "CGST",
+        taxPercentage: 2.5,
+      },
+      {
+        id: 2,
+        taxType: "SGST",
+        taxPercentage: 2.5,
+      },
+    ],
+    users: [
+      {
+        id: 1,
+        name: "Mihir",
+      },
+      {
+        id: 2,
+        name: "Amit",
+      },
+    ],
+    userToItems: [
+      {
+        userId: 1,
+        items: [
+          { itemId: 1, quantity: 2 },
+          { itemId: 2, quantity: 1 },
+        ],
+      },
+      {
+        userId: 2,
+        items: [
+          { itemId: 3, quantity: 1 },
+          { itemId: 4, quantity: 1 },
+        ],
       },
     ],
     extraFee: [{ feeAmount: 10 }],

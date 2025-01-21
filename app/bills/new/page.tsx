@@ -15,7 +15,7 @@ import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArro
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
-import { useBillContext } from "@/app/BillContext";
+import { useBillContext } from "@/contexts/BillContext";
 import BillToUserInfo from "./BillToUserInfo";
 import {
   MainBillProps,
@@ -23,7 +23,7 @@ import {
   ItemsProps,
   TaxesProp,
   UserToItemsProp,
-} from "@/app/types";
+} from "@/libs/types";
 import { bills } from "./billData";
 
 export default function BillPage() {

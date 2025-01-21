@@ -14,8 +14,8 @@ import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle
 import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons/faXmarkCircle";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons/faPenToSquare";
-import { useBillContext } from "./BillContext";
-import { ItemsProps } from "./types";
+import { useBillContext } from "@/contexts/BillContext";
+import { ItemsProps } from "@/libs/types";
 
 export default function Users() {
   const { items, setItems, randomIdGenerator } = useBillContext();

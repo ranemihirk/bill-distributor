@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
-import { MainBillProps } from "@/app/types";
-import { setAndFetchFromRedis } from "./../../connector";
+import { MainBillProps } from "@/libs/types";
+// import { setAndFetchFromRedis } from "@/libs/connector";
 
 const filePath = path.join(process.cwd(), "data", "billsData.json");
 
@@ -12,7 +12,7 @@ export async function HEAD(request: Request) {}
 
 export async function POST(request: Request) {
   try {
-    const result = setAndFetchFromRedis();
+    const result = false; // setAndFetchFromRedis();
     const data = { status: 200, message: "SET and Fetch from Redis.", result };
     return NextResponse.json(data);
   } catch (error) {

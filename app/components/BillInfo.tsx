@@ -1,6 +1,6 @@
 "use client";
 import React, { lazy, useRef, useEffect, useState } from "react";
-import { useBillContext } from "@/app/BillContext";
+import { useBillContext } from "@/contexts/BillContext";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";

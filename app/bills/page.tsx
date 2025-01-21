@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 export const dynamic = "force-dynamic";
-import BillsListPage from "./billsList";
+import BillsListPage from "@/components/billsList";
 
 export default async function BillsPage() {
   // const data = await fetchAPI();
-
+  // const count = await redis.incr("counter");
+  // console.log("count: ", count);
   // const { result } = await fetchRedisAPI();
-  // console.log("result: ", result);
+
+  // async function demo() {
+  //   try {
+  //     const data = await redis.get("key");
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   // setTimeout(async () => {
   // const { result: newResult } = await fetchGetFromRedisAPI();
   // console.log("newResult: ", newResult);
   // }, 2000);
+
+  // useEffect(() => {
+  //   demo();
+  // }, []);
 
   return <BillsListPage data={null} />; // <BillsListPage data={data.bills} />;
 }
@@ -38,7 +51,7 @@ const fetchRedisAPI = async () => {
     },
   });
   const result = await res.json();
-
+  console.log("result: ", result);
   return { result };
 };
 

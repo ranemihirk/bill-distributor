@@ -14,7 +14,7 @@ import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle
 import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons/faXmarkCircle";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons/faPenToSquare";
-import { useBillContext } from "./BillContext";
+import { useBillContext } from "@/contexts/BillContext";
 
 type UsersProp = {
   id: number;

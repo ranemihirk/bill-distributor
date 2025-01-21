@@ -1,6 +1,6 @@
 "use client";
 import React, { lazy, useRef, useEffect, useState } from "react";
-import { useBillContext } from "@/app/BillContext";
+import { useBillContext } from "@/contexts/BillContext";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,7 +17,7 @@ import { faEye } from "@fortawesome/free-regular-svg-icons/faEye";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
 import { dividerClasses } from "@mui/material";
-import { MainBillProps } from "../types";
+import { MainBillProps } from "@/libs/types";
 
 // function createData(id: number, name: string, amount: number, dated: Date) {
 //   return { id, name, amount, dated };

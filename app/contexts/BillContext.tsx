@@ -11,8 +11,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "./types";
-import fetchLocalStorage from "./fetchLocalStorage";
+import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "../libs/types";
+import fetchLocalStorage from "@/libs/fetchLocalStorage";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 type BillContext = {
