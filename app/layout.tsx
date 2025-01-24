@@ -2,9 +2,11 @@
 // import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./../styles/globals.css";
-import BillContextProvider from "./contexts/BillContext";
-import AuthContextProvider from "./contexts/AuthContext";
+import BillContextProvider from "@/contexts/BillContext";
+import AuthContextProvider from "@/contexts/AuthContext";
+import ToastContextProvider from "@/contexts/ToastContext";
 import Header from "@/components/Home/Header";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,8 +44,11 @@ export default function RootLayout({
       >
         <AuthContextProvider>
           <BillContextProvider>
-            <Header />
-            <main>{children}</main>
+            <ToastContextProvider>
+              <Header />
+              <main>{children}</main>
+              <ToastContainer />
+            </ToastContextProvider>
           </BillContextProvider>
         </AuthContextProvider>
       </body>
