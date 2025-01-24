@@ -37,11 +37,11 @@ export default function Header() {
     setOpen(true);
   };
 
-  function remToPx(rem) {
-    // Get the root font size (default is 16px unless overridden in CSS)
-    const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    return rem * rootFontSize; // Convert rem to px
-  }
+  // function remToPx(rem) {
+  //   // Get the root font size (default is 16px unless overridden in CSS)
+  //   const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  //   return rem * rootFontSize; // Convert rem to px
+  // }
 
   useEffect(() => {
     init();
@@ -65,10 +65,11 @@ export default function Header() {
               src="/assets/images/logo.png"
               alt="Bill Distributor"
               className="border border-2 border-dark rounded-full bg-light"
-              width={`${isLargeScreen ? remToPx(4) : remToPx(3)}`}
-              height={`${isLargeScreen ? remToPx(4) : remToPx(3)}`}
+              width={`${isLargeScreen ? 64 : 48}`}
+              height={`${isLargeScreen ? 64 : 48}`}
             />
-
+{/* width={`${isLargeScreen ? remToPx(4) : remToPx(3)}`}
+height={`${isLargeScreen ? remToPx(4) : remToPx(3)}`} */}
             <h1 className="lg:text-2xl font-bold ml-4 text-light">
               Bill Distributor
             </h1>
