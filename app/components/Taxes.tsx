@@ -15,7 +15,7 @@ import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons/faXmarkCircle
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons/faPenToSquare";
 import { useBillContext } from "@/contexts/BillContext";
-import { TaxesProp } from "@/libs/types";
+import { TaxesProp } from "@/lib/types";
 import { root } from "postcss";
 
 export default function Users() {

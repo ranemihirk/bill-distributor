@@ -18,13 +18,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
 import { faCaretSquareDown } from "@fortawesome/free-regular-svg-icons/faCaretSquareDown";
 
-import BillToUserInfo from "@/components/BillToUserInfo";
+import BillToUserInfo from "@/components/Bills/BillToUserInfo";
 import { useBillContext } from "@/contexts/BillContext";
-import NewBillPage from "../bills/new/page";
+import NewBillPage from "../../bills/new/page";
 import Users from "@/components/Users";
 import Items from "@/components/Items";
 import Taxes from "@/components/Taxes";
-import BillInfoPage from "@/components/BillInfo";
+import BillInfoPage from "@/components/Bills/BillInfo";
 import "@/assets/styles/bill.css";
 
 const extraFee = 30;

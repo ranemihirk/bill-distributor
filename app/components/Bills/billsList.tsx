@@ -17,7 +17,7 @@ import { faEye } from "@fortawesome/free-regular-svg-icons/faEye";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
 import { dividerClasses } from "@mui/material";
-import { MainBillProps } from "@/libs/types";
+import { MainBillProps } from "@/lib/types";
 
 // function createData(id: number, name: string, amount: number, dated: Date) {
 //   return { id, name, amount, dated };
