@@ -1,5 +1,5 @@
 import React, { lazy, useRef, useEffect, useState } from "react";
-import { UsersProp, ItemsProps, UserToItemsProp } from "@/libs/types";
+import { UsersProp, ItemsProps, UserToItemsProp } from "@/lib/types";
 
 type BillToUserInfoProp = {
   users: UsersProp[] | null;

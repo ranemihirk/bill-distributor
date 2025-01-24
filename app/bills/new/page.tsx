@@ -23,7 +23,7 @@ import {
   ItemsProps,
   TaxesProp,
   UserToItemsProp,
-} from "@/libs/types";
+} from "@/lib/types";
 import { bills } from "./billData";
 
 export default function BillPage() {

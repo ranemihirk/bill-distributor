@@ -1,4 +1,4 @@
-import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "@/libs/types";
+import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "@/lib/types";
 
 export const bills: MainBillProps[] = [
   {
