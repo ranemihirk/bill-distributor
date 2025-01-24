@@ -1,7 +1,7 @@
 "use client";
 import React, { lazy, useRef, useEffect, useState } from "react";
 import { useBillContext } from "@/contexts/BillContext";
-
+import { useAuthContext } from "@/contexts/AuthContext";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons/faEye";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons/faArrowAltCircleLeft";
-import { dividerClasses } from "@mui/material";
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons/faCircleExclamation";
 import { MainBillProps } from "@/lib/types";
 
 // function createData(id: number, name: string, amount: number, dated: Date) {
@@ -34,24 +34,10 @@ export default function BillsListPage({
 }: {
   data: MainBillProps[] | null;
 }) {
-  const {
-    isLargeScreen,
-    bills,
-    billTitle,
-    billAmountPaid,
-    users,
-    items,
-    taxes,
-    saveBillData,
-    setBillTitle,
-    setBillAmountPaid,
-    setBills,
-  } = useBillContext();
-
-  // console.log("bills: ", bills);
+  const { user } = useAuthContext();
+  const { isLargeScreen, bills, setBills } = useBillContext();
 
   const getDate = (currentDate: Date) => {
-    // console.log("currentDate: ", currentDate, typeof currentDate);
     let date;
     if (currentDate) {
       date = new Date(currentDate);
@@ -78,6 +64,15 @@ export default function BillsListPage({
 
   return (
     <>
+      <div className={`${user && 'hidden'}`}>
+        <div className="flex items-center w-fit p-4 m-auto mb-4 rounded-xl bg-red/20 text-red">
+          <FontAwesomeIcon className="mr-2" icon={faCircleExclamation} />
+          <h3>
+            These bill are stored on your device only if you are not logged in.
+            Clearing your browser's history will erase these bills.
+          </h3>
+        </div>
+      </div>
       <div className="flex justify-between mb-16">
         <Link href="/">
           <FontAwesomeIcon
