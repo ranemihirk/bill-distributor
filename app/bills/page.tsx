@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 export const dynamic = "force-dynamic";
-import BillsListPage from "@/components/Bills/BillsList";
+import BillsListPage from "@/components/Bills/BillsListComponent";
 
 export default async function BillsPage() {
   // const data = await fetchAPI();
