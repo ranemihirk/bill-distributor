@@ -35,7 +35,7 @@ export default function RootLayout({
         <title>Bill Distributor</title>
         <link
           rel="icon"
-          href="./../public/assets/images/favicon.ico"
+          href="./assets/images/favicon.ico"
           sizes="any"
         />
       </head>
