@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPowerOff } from "@fortawesome/free-solid-svg-icons/faPowerOff";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons/faFileLines";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useBillContext } from "@/contexts/BillContext";
 import { useToastContext } from "@/contexts/ToastContext";
@@ -36,6 +37,12 @@ export default function Header() {
     setOpen(true);
   };
 
+  function remToPx(rem) {
+    // Get the root font size (default is 16px unless overridden in CSS)
+    const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    return rem * rootFontSize; // Convert rem to px
+  }
+
   useEffect(() => {
     init();
   }, []);
@@ -49,11 +56,19 @@ export default function Header() {
             className="flex items-center
       "
           >
-            <Avatar
+            {/* <Avatar
               alt="Bill Distributor"
               src="/assets/images/logo.png"
               className="border border-2 border-dark bg-light size-12 lg:size-16"
+            /> */}
+            <Image
+              src="/assets/images/logo.png"
+              alt="Bill Distributor"
+              className="border border-2 border-dark rounded-full bg-light"
+              width={`${isLargeScreen ? remToPx(4) : remToPx(3)}`}
+              height={`${isLargeScreen ? remToPx(4) : remToPx(3)}`}
             />
+
             <h1 className="lg:text-2xl font-bold ml-4 text-light">
               Bill Distributor
             </h1>
