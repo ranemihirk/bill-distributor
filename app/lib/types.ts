@@ -1,3 +1,17 @@
+export type RedisUserProp = {
+  id: any;
+  name: string;
+  email: string;
+  password: string;
+  bills: Array<[]>;
+};
+
+export type AuthUserProp = {
+  id: any;
+  name: string;
+  email: string;
+};
+
 export type MainBillProps = {
   id: number | null;
   title: string;
