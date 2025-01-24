@@ -12,7 +12,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        red: "var(--red)",
+        red: colors.red[600],
         green: colors.emerald[900],
         light: colors.neutral[50],
 				dark: colors.zinc[900],
