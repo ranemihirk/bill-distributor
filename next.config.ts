@@ -3,7 +3,11 @@ import dotenv from "dotenv";
 // Load environment variables from .env.local (or .env)
 dotenv.config();
 
-module.exports = {
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
+module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   typescript: {
     // !! WARN !!
@@ -15,4 +19,4 @@ module.exports = {
   compiler: {
     styledComponents: true,
   },
-};
+});
