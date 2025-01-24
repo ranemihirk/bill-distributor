@@ -13,11 +13,13 @@ import { faFileLines } from "@fortawesome/free-solid-svg-icons/faFileLines";
 import Link from "next/link";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useBillContext } from "@/contexts/BillContext";
+import { useToastContext } from "@/contexts/ToastContext";
 import PopupPage from "@/components/Auth/Popup";
 
 export default function Header() {
   const { user, init, logoutUser } = useAuthContext();
   const { isLargeScreen } = useBillContext();
+  const { createToast } = useToastContext();
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -184,7 +186,10 @@ export default function Header() {
                   Sign In
                 </MenuItem>
                 <MenuItem
-                  onClick={logoutUser}
+                  onClick={() => {
+                    logoutUser();
+                    createToast("Logout Successful.", "success");
+                  }}
                   className={`${!user && "hidden"}`}
                 >
                   <ListItemIcon className="bg-dark/80 min-w-fit p-2 text-light rounded-full mr-2">

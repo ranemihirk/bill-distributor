@@ -7,6 +7,7 @@ import React, {
   SetStateAction,
 } from "react";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { useToastContext } from "@/contexts/ToastContext";
 import { signin } from "@/actions/auth";
 import { fetchBook } from "@/lib/redis";
 import Divider from "@mui/material/Divider";
@@ -18,11 +19,13 @@ type PopupProps = {
 
 export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
   const { loginUser } = useAuthContext();
+  const { createToast, updateToast } = useToastContext();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState(null);
 
   async function handleSubmit() {
+    const toastId = createToast("Logging in...", "info");
     if (emailRef.current && passwordRef.current) {
       // Create a FormData object
       const formData = new FormData();
@@ -33,13 +36,15 @@ export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
 
       if (result?.errors) {
         setError(result.errors);
+        updateToast("Something went wrong!", "error", toastId);
       }
 
       if (!result) {
         const response = await fetchBook(emailRef.current.value);
-        
-        if(response.error){
+
+        if (response.error) {
           console.log(response.error);
+          updateToast("Something went wrong!", "error", toastId);
           return;
         }
 
@@ -49,6 +54,7 @@ export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
             loginUser(userData);
             setOpen(false);
             console.log("Login Successful.");
+            updateToast("Login Successful.", "success", toastId);
           }
         }
       }
