@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
 import Link from "next/link";
 import IconButton from "@mui/material/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -78,7 +78,7 @@ export default function BillsListPage({
 
   return (
     <>
-    <div className="mb-4">
+      <div className="flex justify-between mb-16">
         <Link href="/">
           <FontAwesomeIcon
             icon={faArrowAltCircleLeft}
@@ -86,15 +86,15 @@ export default function BillsListPage({
             size="2xl"
           />
         </Link>
-      </div>
-      <div className="flex justify-between mb-16">
         <h1 className="text-3xl font-bold">Bills</h1>{" "}
-        <Link
-          href="/bills/0"
-          className="border border-dark px-4 py-2 rounded-lg hover:bg-dark hover:text-light hover:shadow-lg transition-all font-bold"
-        >
-          + New Bill
-        </Link>
+        <Tooltip title="Add Bill">
+          <Link
+            href="/bills/0"
+            className="border border-dark px-4 py-2 rounded-lg hover:bg-dark hover:text-light hover:shadow-lg transition-all font-bold"
+          >
+            + Add Bill
+          </Link>
+        </Tooltip>
       </div>
       <TableContainer component={Paper}>
         <Table
@@ -135,24 +135,34 @@ export default function BillsListPage({
                     {getDate(bill.dated)}
                   </TableCell>
                   <TableCell align="center">
-                    <div className="flex flex-wrap items-center justify-center">
-                      <Link
-                        className="border border-solid rounded-md px-4 py-2 border-green text-green text-bold hover:bg-green/30"
-                        href={`/bills/${bill.id}`}
-                      >
-                        <FontAwesomeIcon icon={faEye} /> View
-                      </Link>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => {
-                          deleteBill(bill.id);
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrashCan}
-                          className="text-inherit"
-                        />
-                      </IconButton>
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <Tooltip title="View Bill">
+                        <Link
+                          className="border border-solid text-base rounded-md px-4 py-2 border-green text-green text-bold hover:bg-green/30"
+                          href={`/bills/${bill.id}`}
+                        >
+                          <FontAwesomeIcon
+                            icon={faEye}
+                            className="text-inherit"
+                          />{" "}
+                          {isLargeScreen && "View"}
+                        </Link>
+                      </Tooltip>
+                      <Tooltip title="Delete Bill">
+                        <IconButton
+                          className="border border-solid text-base rounded-md px-4 py-2 border-red text-red text-bold hover:bg-red/30"
+                          aria-label="delete"
+                          onClick={() => {
+                            deleteBill(bill.id);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrashCan}
+                            className="text-inherit"
+                          />{" "}
+                          {isLargeScreen && "Delete"}
+                        </IconButton>
+                      </Tooltip>
                     </div>
                   </TableCell>
                 </TableRow>

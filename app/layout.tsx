@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+"use client";
+// import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./../styles/globals.css";
 import BillContextProvider from "./contexts/BillContext";
 import AuthContextProvider from "./contexts/AuthContext";
+import Header from "@/components/Home/Header";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,10 +17,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Bill Distributor",
-  description: "Bill Distributor",
-};
+// export const metadata: Metadata = {
+//   title: "Bill Distributor",
+//   description: "Bill Distributor",
+// };
 
 export default function RootLayout({
   children,
@@ -39,7 +41,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased p-4 lg:p-8 h-[100vh]`}
       >
         <AuthContextProvider>
-          <BillContextProvider>{children}</BillContextProvider>
+          <BillContextProvider>
+            <Header />
+            <main>{children}</main>
+          </BillContextProvider>
         </AuthContextProvider>
       </body>
     </html>

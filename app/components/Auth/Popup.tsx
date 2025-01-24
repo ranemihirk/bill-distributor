@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, Dispatch, SetStateAction, Fragment } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -18,18 +18,16 @@ import Login from "@/components/Auth/Login";
 
 type PopupProps = {
   open: boolean;
-  type: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  setType: Dispatch<SetStateAction<string>>;
 };
 
 export default function PopupPage({
   open,
-  type,
   setOpen,
-  setType,
 }: PopupProps) {
   const { isLargeScreen } = useBillContext();
+
+  const [type, setType] = useState("login");
 
   const handleClose = () => {
     setOpen(false);
@@ -44,17 +42,6 @@ export default function PopupPage({
       <Dialog
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          component: "form",
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
-            console.log(email);
-            handleClose();
-          },
-        }}
       >
         <DialogActions>
           <Button
