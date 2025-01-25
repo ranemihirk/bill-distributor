@@ -48,7 +48,8 @@ export default function Register({
         const response = await createBook(formData);
         console.log("response: ", response.message);
         if (response.error) {
-          console.log(response.error);
+          console.log(response.error, typeof response.error);
+          setError(response.error);
           updateToast("Something went wrong!", "error", toastId);
           return;
         }
@@ -56,10 +57,10 @@ export default function Register({
         if (response.message) {
           const userData = response.message.data;
           // if (userData.password.match(passwordRef.current.value)) {
-            loginUser(userData);
-            setOpen(false);
-            console.log("Register Successful.");
-            updateToast("Register Successful.", "success", toastId);
+          loginUser(userData);
+          setOpen(false);
+          console.log("Register Successful.");
+          updateToast("Register Successful.", "success", toastId);
           // }
         }
       }
@@ -80,6 +81,7 @@ export default function Register({
           />
           <div className="w-full">
             {error &&
+              typeof error != "string" &&
               error.name.length > 0 &&
               error.name.map((name, key) => (
                 <label
@@ -104,6 +106,7 @@ export default function Register({
           />
           <div className="w-full">
             {error &&
+              typeof error != "string" &&
               error.email.length > 0 &&
               error.email.map((email, key) => (
                 <label
@@ -128,6 +131,7 @@ export default function Register({
           />
           <div>
             {error &&
+              typeof error != "string" &&
               error.password.length > 0 &&
               error.password.map((password, key) => (
                 <label
@@ -141,7 +145,9 @@ export default function Register({
           </div>
         </div>
         <div className="w-full text-center">
-          {" "}
+          {error && typeof error == "string" && (
+            <label className="text-sm text-red block">{error}</label>
+          )}
           <button
             className="border text-sm lg:text-lg border-light px-4 py-2 rounded-lg bg-dark/80 text-light hover:bg-light hover:text-dark hover:shadow hover:shadow-light transition-all font-bold"
             type="button"

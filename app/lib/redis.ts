@@ -14,10 +14,15 @@ export async function createBook(formData) {
       password,
       bills: JSON.stringify([]),
     };
-    const result = await client.hSet(`users:${userData.email}`, userData);
     const keys = await client.keys("*");
     console.log("keys: ", keys);
-    return { message: { status: "success", data: userData } };
+    if (!keys.includes(`users:${userData.email}`)) {
+      const result = await client.hSet(`users:${userData.email}`, userData);
+
+      return { message: { status: "success", data: userData } };
+    } else {
+      return { error: "User with email already exists!" };
+    }
   } catch (e) {
     return { error: e };
   }
@@ -39,8 +44,10 @@ export async function fetchBook(email) {
 
 export async function test() {
   try {
+    const keys = await client.keys("*");
+    console.log("keys: ", keys);
     const test = await client.hGetAll(`users:rane204mihir@gmail.com`);
-    return {...test};
+    return { ...test, ...keys };
   } catch (e) {
     return { error: e };
   }
