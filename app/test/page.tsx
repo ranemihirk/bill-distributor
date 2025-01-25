@@ -1,13 +1,13 @@
 "use client";
 
-import { createBook } from "@/lib/redis";
+import { createUser } from "@/lib/redis";
 import { useState } from "react";
 
 export default function Create() {
   const [error, setError] = useState("");
 
   async function handleSubmit(formData) {
-    const result = await createBook(formData);
+    const result = await createUser(formData);
 
     if (result?.error) {
       setError(result.error);
