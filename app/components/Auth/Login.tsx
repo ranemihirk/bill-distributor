@@ -55,6 +55,9 @@ export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
             setOpen(false);
             console.log("Login Successful.");
             updateToast("Login Successful.", "success", toastId);
+          } else {
+            setError("Email/Password doesn't match.");
+            updateToast("Something went wrong!", "error", toastId);
           }
         }
       }
@@ -75,6 +78,7 @@ export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
           />
           <div className="w-full">
             {error &&
+              typeof error != "string" &&
               error.email.length > 0 &&
               error.email.map((email, key) => (
                 <label
@@ -99,6 +103,7 @@ export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
           />
           <div>
             {error &&
+              typeof error != "string" &&
               error.password.length > 0 &&
               error.password.map((password, key) => (
                 <label
@@ -112,7 +117,9 @@ export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
           </div>
         </div>
         <div className="w-full text-center">
-          {" "}
+          {error && typeof error == "string" && (
+            <label className="text-sm text-red block">{error}</label>
+          )}
           <button
             className="border text-sm lg:text-lg border-light px-4 py-2 rounded-lg bg-dark/80 text-light hover:bg-light hover:text-dark hover:shadow hover:shadow-light transition-all font-bold"
             type="button"
