@@ -9,7 +9,7 @@ import React, {
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useToastContext } from "@/contexts/ToastContext";
 import { signin } from "@/actions/auth";
-import { fetchBook } from "@/lib/redis";
+import { fetchUser } from "@/lib/redis";
 import Divider from "@mui/material/Divider";
 
 type PopupProps = {
@@ -40,7 +40,7 @@ export default function Login({ handlePopupTypeChange, setOpen }: PopupProps) {
       }
 
       if (!result) {
-        const response = await fetchBook(emailRef.current.value);
+        const response = await fetchUser(emailRef.current.value);
 
         if (response.error) {
           console.log(response.error);

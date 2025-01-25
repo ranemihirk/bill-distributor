@@ -18,7 +18,7 @@ import {
   setCookie,
   getCookie,
 } from "@/lib/cookies";
-import { fetchBook } from "@/lib/redis";
+import { fetchUser } from "@/lib/redis";
 
 type AuthContext = {
   user: AuthUserProp | null;
@@ -44,7 +44,7 @@ export default function AuthContextProvider({
     if (cookie) {
       const cookieAge = checkCookieAge("MyBills");
       if (!cookieAge) {
-        const data = await fetchBook(cookie);
+        const data = await fetchUser(cookie);
         loginUser(data.message.data);
       } else {
         logoutUser();

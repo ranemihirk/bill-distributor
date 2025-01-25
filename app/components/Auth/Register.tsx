@@ -9,7 +9,7 @@ import React, {
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useToastContext } from "@/contexts/ToastContext";
 import { signup } from "@/actions/auth";
-import { createBook } from "@/lib/redis";
+import { createUser } from "@/lib/redis";
 import Divider from "@mui/material/Divider";
 
 type PopupProps = {
@@ -45,7 +45,7 @@ export default function Register({
       }
 
       if (!result) {
-        const response = await createBook(formData);
+        const response = await createUser(formData);
         console.log("response: ", response.message);
         if (response.error) {
           console.log(response.error, typeof response.error);

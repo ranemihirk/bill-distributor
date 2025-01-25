@@ -4,7 +4,7 @@ import { client } from "@/lib/connector";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
-export async function createBook(formData) {
+export async function createUser(formData) {
   try {
     const { email, name, password } = Object.fromEntries(formData);
     const userData = {
@@ -27,7 +27,7 @@ export async function createBook(formData) {
   }
 }
 
-export async function fetchBook(email) {
+export async function fetchUser(email) {
   try {
     const result = await client.hGetAll(`users:${email}`);
     if (!result || Object.keys(result).length === 0) {
