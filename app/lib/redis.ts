@@ -15,7 +15,6 @@ export async function createBook(formData) {
       bills: JSON.stringify([]),
     };
     const keys = await client.keys("*");
-    console.log("keys: ", keys);
     if (!keys.includes(`users:${userData.email}`)) {
       const result = await client.hSet(`users:${userData.email}`, userData);
 
@@ -31,8 +30,6 @@ export async function createBook(formData) {
 export async function fetchBook(email) {
   try {
     const result = await client.hGetAll(`users:${email}`);
-    const keys = await client.keys("*");
-    console.log("keys: ", keys);
     if (!result || Object.keys(result).length === 0) {
       return { error: "No such user." };
     }
@@ -45,7 +42,6 @@ export async function fetchBook(email) {
 export async function test() {
   try {
     const keys = await client.keys("*");
-    console.log("keys: ", keys);
     const test = await client.hGetAll(`users:rane204mihir@gmail.com`);
     return { ...test, ...keys };
   } catch (e) {
