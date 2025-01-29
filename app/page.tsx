@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuthContext } from "@/contexts/AuthContext";
-import { test } from "@/lib/redis";
+import { test, testSet } from "@/lib/redis";
 
 export default function Home() {
   const { init } = useAuthContext();
@@ -18,6 +18,7 @@ export default function Home() {
   return (
     <div>
       <button onClick={testNew}>Test</button>
+      <button onClick={testSet}>Test Set</button>
     </div>
   );
 }

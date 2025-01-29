@@ -11,26 +11,28 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "../lib/types";
-import fetchLocalStorage from "@/lib/fetchLocalStorage";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "@/lib/types";
+import fetchLocalStorage from "@/hooks/fetchLocalStorage";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { v4 as uuidv4 } from "uuid";
+import { fetchUserBills, setUserBills, moveDataToRedis } from "@/lib/redis";
 
 type BillContext = {
   isLargeScreen: boolean;
   bills: MainBillProps[] | null;
   currentBill: MainBillProps | null;
-  billId: number;
+  billId: string;
   billTitle: string;
   billAmountPaid: number;
   billDate: Date | string;
   users: UsersProp[];
   items: ItemsProps[];
   taxes: TaxesProp[];
-  fetchAllBills: () => void;
-  fetchBillData: (id: number) => MainBillProps | null;
+  fetchBillData: (id: string) => MainBillProps | null;
   setBills: Dispatch<SetStateAction<MainBillProps[] | null>>;
   setCurrentBill: Dispatch<SetStateAction<MainBillProps | null>>;
-  setBillId: Dispatch<SetStateAction<number>>;
+  setBillId: Dispatch<SetStateAction<string>>;
   setBillTitle: Dispatch<SetStateAction<string>>;
   setBillAmountPaid: Dispatch<SetStateAction<number>>;
   setBillDatePaid: Dispatch<SetStateAction<Date | string>>;
@@ -38,7 +40,7 @@ type BillContext = {
   setUsers: Dispatch<SetStateAction<UsersProp[]>>;
   setItems: Dispatch<SetStateAction<ItemsProps[]>>;
   setTaxes: Dispatch<SetStateAction<TaxesProp[]>>;
-  randomIdGenerator: () => number;
+  randomIdGenerator: () => string;
   calculateSubTotal: () => number;
   calculateBillTax: () => number;
 };
@@ -48,7 +50,7 @@ type BillContextProviderProps = {
 };
 
 const defaultBill: MainBillProps = {
-  id: 1,
+  id: "",
   title: "",
   billTotal: 0,
   dated: new Date(),
@@ -65,15 +67,19 @@ export const BillContext = createContext<BillContext | null>(null);
 export default function BillContextProvider({
   children,
 }: BillContextProviderProps) {
-  const [bills, setBills] = fetchLocalStorage<MainBillProps[] | null>(
+  const { user } = useAuthContext();
+
+  const [bills, setBills] = useState<MainBillProps[] | null>(null);
+
+  const [localBills, setLocalBills] = fetchLocalStorage<MainBillProps[] | null>(
     "bills",
     null
-  ); // ToDo: Comment when Redis is implemented.
+  );
 
-  // const [bills, setBills] = useState<MainBillProps[] | null>(null); // ToDo: Uncomment when Redis is implemented.
+  // ToDo: Comment when Redis is implemented.
 
   const [currentBill, setCurrentBill] = useState<MainBillProps | null>(null);
-  const [billId, setBillId] = useState<number>(0);
+  const [billId, setBillId] = useState<string>("");
   const [billTitle, setBillTitle] = useState<string>("");
   const [billAmountPaid, setBillAmountPaid] = useState<number>(0);
   const [billDate, setBillDatePaid] = useState<Date | string>(new Date());
@@ -87,19 +93,47 @@ export default function BillContextProvider({
 
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
 
+  const fetchBillDataFromStorage = useCallback(async () => {
+    if (user) {
+      const result = await fetchUserBills(user.email);
+      if (result.error) {
+        return null;
+      }
+      if (result.message) {
+        return result.message.data;
+      }
+    } else {
+      return localBills;
+    }
+  }, [setLocalBills, setUserBills]);
+
+  const updateBillDataFromStorage = useCallback(
+    async (newBills: MainBillProps[] | null) => {
+      console.log("updateBillDataFromStorage: ", newBills);
+      const data = newBills;
+      if (user) {
+        setUserBills(user, newBills == null ? [] : newBills);
+      } else {
+        setLocalBills(newBills);
+      }
+    },
+    [setLocalBills, setUserBills]
+  );
+
+  const removeFromLocalStorege = async () => {
+    console.log('removeFromLocalStorege: ', user, bills);
+    const result = await moveDataToRedis(user.email, bills);
+    console.log('result: ', result);
+    if (result.error) return;
+
+    if (result.message) {
+      setBills(result.message.data);
+    }
+    setLocalBills([]);
+  };
+
   function randomIdGenerator() {
-    return Math.floor(Math.random() * 1000000) + 1;
-  }
-  async function fetchAllBills() {
-    const apiCallPath = `/api/fetchBillData`;
-    let res = await fetch(apiCallPath, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const result = await res.json();
-    setBills(result.bills);
+    return uuidv4(); // Math.floor(Math.random() * 1000000) + 1;
   }
 
   const callUpdateBillDataAPI = async (current: MainBillProps) => {
@@ -114,10 +148,10 @@ export default function BillContextProvider({
     const result = await res.json();
   };
 
-  const fetchBillData = (bill_id: number) => {
+  const fetchBillData = (bill_id: string) => {
     setBillId(bill_id);
     if (bills && bills.length > 0) {
-      if (bill_id != 0) {
+      if (bill_id != "") {
         const current = bills.filter((bill) => bill.id == bill_id)[0];
         if (current) {
           setCurrentBill(current);
@@ -158,7 +192,7 @@ export default function BillContextProvider({
 
   const saveBillData = useCallback(() => {
     if (billTitle != "" && billAmountPaid != 0 && billDate instanceof Date) {
-      if (billId == 0) {
+      if (billId != "") {
         const currentBillId = randomIdGenerator();
         setBillId(currentBillId);
         const current: MainBillProps = defaultBill;
@@ -197,7 +231,8 @@ export default function BillContextProvider({
         if (current) {
           // callUpdateBillDataAPI(current);
 
-          billTotalRef.current = subTotalRef.current + (subTotalRef.current * taxRef.current) / 100;
+          billTotalRef.current =
+            subTotalRef.current + (subTotalRef.current * taxRef.current) / 100;
           current.billAmountPaid = billAmountPaid;
           current.users = users;
           current.items = items;
@@ -246,7 +281,20 @@ export default function BillContextProvider({
 
   useEffect(() => {
     console.log("bills: ", bills);
+    if (bills) {
+      updateBillDataFromStorage(bills);
+    }
   }, [bills]);
+
+  useEffect(() => {
+    console.log("user: ", user);
+    if (user) {
+      removeFromLocalStorege();
+    }
+    else{
+      setBills(null);
+    }
+  }, [user]);
 
   useEffect(() => {
     saveToBills();
@@ -277,6 +325,17 @@ export default function BillContextProvider({
     setBillAndStore();
   }, [currentBill]);
 
+  useEffect(() => {
+    console.log("bills: ", bills);
+    async function init() {
+      const result = await fetchBillDataFromStorage();
+      console.log("result: ", result);
+      setBills(result);
+    }
+
+    init();
+  }, []);
+
   return (
     <BillContext.Provider
       value={{
@@ -290,7 +349,6 @@ export default function BillContextProvider({
         users,
         items,
         taxes,
-        fetchAllBills,
         fetchBillData,
         setBills,
         setCurrentBill,
