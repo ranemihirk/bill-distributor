@@ -2,7 +2,7 @@ import { MainBillProps, UsersProp, ItemsProps, TaxesProp } from "@/lib/types";
 
 export const bills: MainBillProps[] = [
   {
-    id: 1,
+    id: "1",
     title: "Barista",
     billTotal: 1265,
     dated: new Date("11/17/2024"),
@@ -66,7 +66,7 @@ export const bills: MainBillProps[] = [
     extraFee: [{ feeAmount: 30 }],
   },
   {
-    id: 2,
+    id: "2",
     title: "Barista",
     billTotal: 2941,
     dated: new Date("11/28/2024"),
@@ -157,7 +157,7 @@ export const bills: MainBillProps[] = [
     extraFee: [{ feeAmount: 50 }],
   },
   {
-    id: 3,
+    id: "3",
     title: "Barista",
     billTotal: 856,
     dated: new Date("12/23/2024"),
@@ -219,7 +219,7 @@ export const bills: MainBillProps[] = [
     extraFee: [{ feeAmount: 10 }],
   },
   {
-    id: 4,
+    id: "4",
     title: "Barista",
     billTotal: 893,
     dated: new Date("01/03/2025"),
@@ -267,7 +267,7 @@ export const bills: MainBillProps[] = [
     extraFee: [{ feeAmount: 10 }],
   },
   {
-    id: 5,
+    id: "5",
     title: "Barista",
     billTotal: 1034,
     dated: new Date("01/08/2024"),
@@ -324,7 +324,7 @@ export const bills: MainBillProps[] = [
     extraFee: [{ feeAmount: 10 }],
   },
   {
-    id: 5,
+    id: "6",
     title: "Barista",
     billTotal: 1076,
     dated: new Date("01/19/2024"),
