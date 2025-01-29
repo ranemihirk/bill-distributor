@@ -1,57 +1,46 @@
-import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
+import { NextRequest, NextResponse } from "next/server";
 import path from "path";
-import { MainBillProps } from "@/lib/types";
+import { fetchUserBills, setUserBills } from "@/lib/redis";
 
-const filePath = path.join(process.cwd(), "data", "billsData.json");
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const email = searchParams.get("email"); // User email
 
-export async function GET(request: Request) {}
+  if (!email) {
+    return NextResponse.json({ error: "Missing email" }, { status: 400 });
+  }
 
-export async function HEAD(request: Request) {}
-
-export async function POST(request: Request) {
   try {
-    console.log("updateBillData");
-    const fileContents = await fs.readFile(filePath, "utf8");
-    const data = JSON.parse(fileContents);
-    console.log("data: ", typeof data, data);
-    const body = await request.json();
-    console.log("body: ", body);
-    if (body != null && data.bills) {
-      // Using `some` (returns true/false)
-      const exists = data.bills.some(
-        (bill: MainBillProps) => bill.id === body.id
-      );
-      console.log(exists); // true
-      let updateBillData;
-      try {
-        if (exists) {
-          updateBillData = data.bills.map((bill: MainBillProps) =>
-            bill.id === body.id ? body : bill
-          );
-        } else {
-          updateBillData = data.bills.push(body);
-        }
-        const newData = {
-          bills: updateBillData,
-        };
-        await fs.writeFile(filePath, JSON.stringify(newData), "utf8");
-        // file written successfully
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    return NextResponse.json(data);
+    const data = await fetchUserBills(email);
+    return NextResponse.json({ data: data ? data.message.data.json() : null });
   } catch (error) {
-    console.error("Error reading file:", error);
-    return NextResponse.json({
-      success: false,
-      error: "Failed to fetch file data",
-    });
+    console.error("Redis GET error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch data from Redis" },
+      { status: 500 }
+    );
   }
 }
 
-async function addBillData() {}
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { user, bills } = body;
 
-async function updateBillData() {}
+    if (!user || bills === undefined) {
+      return NextResponse.json(
+        { error: "Missing user or bills" },
+        { status: 400 }
+      );
+    }
+
+    await setUserBills(user, bills);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Redis POST error:", error);
+    return NextResponse.json(
+      { error: "Failed to save data to Redis" },
+      { status: 500 }
+    );
+  }
+}
