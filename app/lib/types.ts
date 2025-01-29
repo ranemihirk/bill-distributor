@@ -13,7 +13,7 @@ export type AuthUserProp = {
 };
 
 export type MainBillProps = {
-  id: number | null;
+  id: string | null;
   title: string;
   billTotal: number;
   dated: Date;
