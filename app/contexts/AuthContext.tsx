@@ -52,7 +52,7 @@ export default function AuthContextProvider({
     }
   };
 
-  const loginUser = (userData) => {
+  const loginUser = async (userData) => {
     setUser({ id: userData.id, name: userData.name, email: userData.email });
     setCookie(userData.email);
   };

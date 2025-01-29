@@ -49,7 +49,7 @@ export default function BillsListPage({
     return newDate;
   };
 
-  const deleteBill = (billId: number | null) => {
+  const deleteBill = (billId: string | null) => {
     if (billId && bills && bills.length > 0) {
       const current = bills.filter((bill) => bill.id != billId);
       setBills(current);
@@ -64,12 +64,13 @@ export default function BillsListPage({
 
   return (
     <>
-      <div className={`${user && 'hidden'}`}>
+      <div className={`${user && "hidden"}`}>
         <div className="flex items-center w-fit p-4 m-auto mb-4 rounded-xl bg-red/20 text-red">
           <FontAwesomeIcon className="mr-2" icon={faCircleExclamation} />
           <h3>
-            These bill are stored on your device only if you are not logged in.
-            Clearing your browser's history will erase these bills.
+            These bills are stored locally on your device if you're not logged
+            in. Clearing your browser history will remove them. To save your
+            bills to the database and access them from anywhere, please log in.
           </h3>
         </div>
       </div>

@@ -36,12 +36,8 @@ export default function BillDataPage() {
   const bill_id = pathname.split("/")[2];
 
   const {
-    bills,
     currentBill,
-    billId,
     billTitle,
-    billAmountPaid,
-    billDate,
     users,
     items,
     taxes,
@@ -117,7 +113,7 @@ export default function BillDataPage() {
     
     // if (bills == null) return router.push("/bills");
 
-    const billData = fetchBillData(Number(bill_id));
+    const billData = fetchBillData(bill_id);
     if (billData != null) {
       const currentDate = new Date(billData.dated);
       if (billTitleRef.current && billPaidRef.current && billDateRef.current) {
